@@ -8,6 +8,12 @@ module.exports = {
         let zumbi = await Zumbi.find();
 
         return res.json(zumbi);
+    },
+
+    async store(req, res) {
+        let zumbi = await Zumbi.create(req.body);
+
+        return res.json(zumbi);
     }
 }
 
