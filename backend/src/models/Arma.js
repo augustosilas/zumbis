@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
+
 
 const ArmaSchema = new mongoose.Schema({
     nome: {
@@ -14,6 +16,8 @@ const ArmaSchema = new mongoose.Schema({
         required: true
     }
 });
+
+ArmaSchema.plugin(mongoosePaginate);
 
 // Código utilizado para registrar o código da aplicação
 // Toda aplicação sabe que existe uma model Arma

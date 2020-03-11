@@ -6,7 +6,9 @@ const Arma = mongoose.model('Arma');
 module.exports = {
     // Mostra todos elementos
     async index(req, res) {
-        let armas = await Arma.find();
+        let { page = 1 } = req.query;
+
+        let armas = await Arma.paginate({}, {page, limit: 10});
 
         return res.json(armas);
     },

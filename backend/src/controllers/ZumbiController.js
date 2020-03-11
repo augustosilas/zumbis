@@ -7,7 +7,11 @@ const Armadura = mongoose.model('Armadura');
 
 module.exports = {
     async index(req, res) {
-        let zumbi = await Zumbi.find();
+        const { page = 1 } = req.query;
+        console.log(req);
+        // Primeiro parâmetro: query, condições de filtro
+        // Segundo parâmetro: página atual e limite de elementos
+        let zumbi = await Zumbi.paginate({}, {page, limit: 10});
 
         return res.json(zumbi);
     },

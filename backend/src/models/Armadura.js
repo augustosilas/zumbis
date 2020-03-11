@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 
 const ArmaduraSchema = new mongoose.Schema({
     nome: {
@@ -11,4 +12,5 @@ const ArmaduraSchema = new mongoose.Schema({
     }
 });
 
+ArmaduraSchema.plugin(mongoosePaginate);
 mongoose.model('Armadura', ArmaduraSchema);
