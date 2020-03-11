@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 // Importando model 'Zumbi'
 const Zumbi = mongoose.model('Zumbi');
+const Arma = mongoose.model('Arma');
+const Armadura = mongoose.model('Armadura');
 
 module.exports = {
     async index(req, res) {
@@ -11,9 +13,20 @@ module.exports = {
     },
 
     async store(req, res) {
-        let zumbi = await Zumbi.create(req.body);
+        let { arma, armadura } = req.body;
 
-        return res.json(zumbi);
+        let nome = arma;
+        let zumbiArma = await Arma.findOne({ nome });
+                
+        nome = armadura;
+        let zumbiArmadura = await Armadura.findOne({ nome });
+        
+        if(zumbiArma != null && zumbiArmadura != null) {
+            const zumbi = await Zumbi.create(req.body);      
+            return res.json(res.json(zumbi));
+        }
+
+        return res.send("Impossivel criar zumbi!!!");
     },
 
     async update(req, res) {
