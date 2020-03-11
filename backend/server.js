@@ -5,6 +5,9 @@ const requireDir = require('require-dir');
 // Iniciando o app
 const app = express();
 
+// Permitindo que envie dados para aplicação no formato de json
+app.use(express.json());
+
 // Iniciando o BD
 // É necessario passar a url de conexão com o mongodb
 // nodeapi: nome do schema a ser utilizado
@@ -12,16 +15,13 @@ mongoose.connect('mongodb://localhost:27017/nodeapi',
 { useNewUrlParser: true });
 requireDir('./src/models')
 
-app.use(express.json());
-
-// Acesso a Arma, inserir novos dados
-const Arma = mongoose.model('Arma');
-const Armadura = mongoose.model('Armadura');
-const Zumbi = mongoose.model('Zumbi');
+const Arma = mongoose.model('Arma');            // Acesso a Arma: inserir, editar e deletar
+const Armadura = mongoose.model('Armadura');    // Acesso a Armadura: inserir, editar e deletar
+const Zumbi = mongoose.model('Zumbi');          // Acesso a Zumbi: inserir, editar e deletar
 
 
 // Rotas
-// 'use' é como se fosse um coringa, aceita todo tipo de requisições
+// 'use' é um coringa, aceita todo tipo de requisições
 app.use('/api', require('./src/routes'))
 
 app.listen(3003);
