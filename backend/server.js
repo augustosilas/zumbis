@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const requireDir = require('require-dir');
 
@@ -7,6 +8,7 @@ const app = express();
 
 // Permitindo que envie dados para aplicação no formato de json
 app.use(express.json());
+app.use(cors());
 
 // Iniciando o BD
 // É necessario passar a url de conexão com o mongodb
