@@ -7,6 +7,8 @@ const ZumbiController = require('./controllers/ZumbiController')
 
 routes.get('/armas', ArmaController.index);             // exibe todos elementos
 routes.post('/armas', ArmaController.store);            // cria novos elementos
+routes.put('/armas:id', ArmaController.update);         // atualiza um elemento existente através do id
+routes.delete('/armas:id', ArmaController.destroy);     // exclui um elemento do DB através do id
 
 routes.get('/armaduras', ArmaduraController.index);     // exibe todos elementos
 

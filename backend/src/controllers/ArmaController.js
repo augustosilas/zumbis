@@ -19,5 +19,18 @@ module.exports = {
         let arma = await Arma.create(req.body);
 
         return res.json(arma);
+    },
+
+    // Atualiza um elemento existente
+    async update(req, res) {
+        let arma = await Arma.findByIdAndUpdate(req.params.id, req.body, {new: true})
+
+        return res.json(arma);
+    },
+
+    async destroy(req, res) {
+        await Arma.findByIdAndRemove(req.params.id);
+
+        return res.send();
     }
 };
