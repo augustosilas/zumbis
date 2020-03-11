@@ -21,13 +21,14 @@ module.exports = {
         return res.json(arma);
     },
 
-    // Atualiza um elemento existente
+    // Atualiza um elemento existente através do id
     async update(req, res) {
         let arma = await Arma.findByIdAndUpdate(req.params.id, req.body, {new: true})
 
         return res.json(arma);
     },
 
+    // Exclui um elemento existente através do id
     async destroy(req, res) {
         await Arma.findByIdAndRemove(req.params.id);
 
