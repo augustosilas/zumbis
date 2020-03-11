@@ -5,11 +5,11 @@ const Armadura = require('./Armadura')
 
 const ZumbiSchema = new mongoose.Schema({
     arma: {
-        type: [Arma],
+        type: [String],
         required: true
     },
     armadura: {
-        type: [Armadura],
+        type: [String],
         required: true
     }
 });
