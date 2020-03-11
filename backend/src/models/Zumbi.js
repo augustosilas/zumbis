@@ -13,3 +13,5 @@ const ZumbiSchema = new mongoose.Schema({
         required: true
     }
 });
+
+mongoose.model('Zumbi', ZumbiSchema);
