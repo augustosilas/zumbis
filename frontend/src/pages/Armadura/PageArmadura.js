@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {View, Button, Text} from 'react-native';
 
-function PageArmadura({navigate}) {
+function PageArmadura({navigation}) {
   return (
     <View>
       <Button
         title="Cadastrar"
         onPress={() => {
-          'Cadastrar';
+          navigation.navigate('CadastroArmadura');
         }}
       />
       <Button
