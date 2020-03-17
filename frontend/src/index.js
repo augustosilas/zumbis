@@ -1,62 +1,71 @@
-import React, { Component } from 'react';
-import { Text, View, TextInput, Button } from 'react-native';
+import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
-export default class HelloWorldApp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            nome: '',
-            calibri: '',
-            dano: ''
-        };
-    }
-    render() {
-        return (
-            <View>
-                <View>
-                    <View>
-                        <TextInput
-                            style={{ height: 40, borderColor: 'gray' }}
-                            placeholder="Nome"
-                            onChangeText={(nome) => this.setState({ nome })}
-                            value={this.state.nome}
-                        />
-                    </View>
-                    <View>
-                        <TextInput
-                            style={{ height: 40, borderColor: 'gray' }}
-                            placeholder="calibri"
-                            onChangeText={(calibri) => this.setState({ calibri })}
-                            value={this.state.calibri}
-                        />
-                    </View>
-                    <View>
-                        <TextInput
-                            style={{ height: 40, borderColor: 'gray' }}
-                            placeholder="Dano"
-                            onChangeText={(dano) => this.setState({ dano })}
-                            value={this.state.dano}
-                        />
-                    </View>
-                </View>
-                <View>
-                    <Button
-                        onPress={() => {
+import React, {Component} from 'react';
+import {Text, View, TextInput, Button} from 'react-native';
 
-                        }}
-                        title="Cadastrar"
-                    />
-                </View>
-            </View>
-        );
-    }
+function MyHome({navigation}) {
+  return (
+    <Button
+      title="Ir"
+      onPress={navigation.navigate('Profile', {name: 'Silas'})}
+    />
+  );
 }
 
+export default MyHome;
+
+// export default class HelloWorldApp extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       nome: '',
+//       calibri: '',
+//       dano: '',
+//     };
+//   }
+//   render() {
+//     return (
+//       <View>
+//         <View>
+//           <View>
+//             <TextInput
+//               style={{height: 40, borderColor: 'gray'}}
+//               placeholder="Nome"
+//               onChangeText={nome => this.setState({nome})}
+//               value={this.state.nome}
+//             />
+//           </View>
+//           <View>
+//             <TextInput
+//               style={{height: 40, borderColor: 'gray'}}
+//               placeholder="calibri"
+//               onChangeText={calibri => this.setState({calibri})}
+//               value={this.state.calibri}
+//             />
+//           </View>
+//           <View>
+//             <TextInput
+//               style={{height: 40, borderColor: 'gray'}}
+//               placeholder="Dano"
+//               onChangeText={dano => this.setState({dano})}
+//               value={this.state.dano}
+//             />
+//           </View>
+//         </View>
+//         <View>
+//           <Button onPress={() => {}} title="Cadastrar" />
+//         </View>
+//       </View>
+//     );
+//   }
+// }
 
 // const styles = StyleSheet.create({
 //   textInput: {
-//     height: 40, 
-//     borderColor: 'gray', 
+//     height: 40,
+//     borderColor: 'gray',
 //     borderWidth: 1,
 //   },
 // });
