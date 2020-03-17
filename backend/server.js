@@ -13,7 +13,7 @@ app.use(cors());
 // Iniciando o BD
 // É necessario passar a url de conexão com o mongodb
 // nodeapi: nome do schema a ser utilizado
-mongoose.connect('mongodb://localhost:27017/nodeapi', 
+mongoose.connect('mongodb://localhost:27018/nodeapi', 
 { useNewUrlParser: true });
 requireDir('./src/models')
 
