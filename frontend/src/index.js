@@ -1,12 +1,18 @@
 import * as React from 'react';
 import {Button, View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
+
 import {createStackNavigator} from '@react-navigation/stack';
 
 import PageHome from './pages/PageHome';
-import PageArma from './pages/Arma/PageArma';
-import PageArmadura from './pages/Armadura/PageArmadura';
 import PageZumbi from './pages/Zumbi/PageZumbi';
+
+import PageArma from './pages/Arma/PageArma';
+import CadastroArma from './pages/Arma/CRUD/cadastrar';
+import EditarArma from './pages/Arma/CRUD/editar';
+
+import PageArmadura from './pages/Armadura/PageArmadura';
+import CadastroArmadura from './pages/Armadura/CRUD/cadastrar';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +24,9 @@ function App() {
         <Stack.Screen name="Arma" component={PageArma} />
         <Stack.Screen name="Armadura" component={PageArmadura} />
         <Stack.Screen name="Zumbi" component={PageZumbi} />
+        <Stack.Screen name="CadastroArma" component={CadastroArma} />
+        <Stack.Screen name="EditarArma" component={EditarArma} />
+        <Stack.Screen name="CadastroArmadura" component={CadastroArmadura} />
       </Stack.Navigator>
     </NavigationContainer>
   );
