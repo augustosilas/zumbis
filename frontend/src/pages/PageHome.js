@@ -1,50 +1,27 @@
-import React, {Component} from 'react';
-import {View, Button, Text} from 'react-native';
-import {createStackNavigator} from 'react-navigate';
+import * as React from 'react';
+import {Button, View, Text} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
-import PageArma from './PageArma';
-import PageArmadura from './PageArmadura';
-import PageZumbi from './PageZumbi';
-
-// import {NavigationContainer} from '@react-navigation/native';
-// import {createStackNavigator} from '@react-navigation/stack';
-
-export class PageHome extends Component {
-  render() {
-    return (
-      <View>
-        <Button
-          title="Arma"
-          onPress={() => {
-            this.props.navigation.navigate('Arma');
-          }}
-        />
-        <Button
-          title="Armadura"
-          onPress={() => {
-            'Armadura';
-          }}
-        />
-        <Button
-          title="Zumbi"
-          onPress={() => {
-            'Zumbi';
-          }}
-        />
-      </View>
-    );
-  }
+function HomeScreen({navigation}) {
+  return (
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Home</Text>
+      <Button title="Arma" onPress={() => navigation.navigate('Arma')} />
+      <Button
+        title="Armadura"
+        onPress={() => {
+          navigation.navigate('Armadura');
+        }}
+      />
+      <Button
+        title="Zumbi"
+        onPress={() => {
+          navigation.navigate('Zumbi');
+        }}
+      />
+    </View>
+  );
 }
 
-export default class App extends Component {
-  render() {
-    return <AppStackNavigator />;
-  }
-}
-
-const AppStackNavigator = createStackNavigator({
-  Home: PageHome,
-  Arma: PageArma,
-  Armadura: PageArmadura,
-  Zumbi: PageZumbi,
-});
+export default HomeScreen;
