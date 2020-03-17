@@ -1,20 +1,29 @@
-import 'react-native-gesture-handler';
+import * as React from 'react';
+import {Button, View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import React, {Component} from 'react';
-import {Text, View, TextInput, Button} from 'react-native';
+import PageHome from './pages/PageHome';
+import PageArma from './pages/Arma/PageArma';
+import PageArmadura from './pages/Armadura/PageArmadura';
+import PageZumbi from './pages/Zumbi/PageZumbi';
 
-function MyHome({navigation}) {
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <Button
-      title="Ir"
-      onPress={navigation.navigate('Profile', {name: 'Silas'})}
-    />
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={PageHome} />
+        <Stack.Screen name="Arma" component={PageArma} />
+        <Stack.Screen name="Armadura" component={PageArmadura} />
+        <Stack.Screen name="Zumbi" component={PageZumbi} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-export default MyHome;
+export default App;
 
 // export default class HelloWorldApp extends Component {
 //   constructor(props) {
