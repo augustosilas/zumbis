@@ -1,85 +1,77 @@
-import React, {Component} from 'react';
-import {
-  View,
-  Button,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  FlatList,
-} from 'react-native';
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
 
-import {Button as ButtonUI, Icon, List, ListItem} from '@ui-kitten/components';
-import {ApplicationProvider} from '@ui-kitten/components';
-import {mapping, light as lightTheme} from '@eva-design/eva';
-// import Constants from 'expo-constants';
+import {Button, List, ListItem, ButtonGroup} from '@ui-kitten/components';
 
-const DATA = [
+let DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
+    name: 'Bazuca',
+    calibri: 'nem sei',
+    dano: 'vish',
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
+    name: 'Pistola',
+    calibri: '.40',
+    dano: 'eu hem',
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
+    name: 'Escopete',
+    calibri: 'Doze',
+    dano: 'Na cara não, pra não estragar o velório',
   },
 ];
 
-function Item({title}) {
-  return (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
+const PageArma = ({navigation}) => {
+  const onSelected = item => {
+    navigation.navigate('EditarArma', {values: item});
+  };
+
+  const renderItem = ({item, index}) => (
+    <ListItem
+      title={`${item.name}`}
+      description={`Calibri: ${item.calibri} \n Dano: ${item.dano}`}
+      accessory={() => renderItemAccessory(styles, index, item)}
+      onPress={() => onSelected(item)}
+    />
+  );
+
+  const renderItemAccessory = (style, index, item) => (
+    <View>
+      <ButtonGroup style={styles.buttonGroup} status="primary">
+        <Button onPress={() => onSelected(item)}>Editar</Button>
+        <Button onPress={'remove'}>Deletar</Button>
+      </ButtonGroup>
     </View>
   );
-}
 
-const renderItemAccessory = style => <ButtonUI style={style}>Deletar</ButtonUI>;
-
-const renderItem = ({item, index}) => (
-  <ListItem
-    title={`${item.title} ${index + 1}`}
-    description={`${item.description} ${index + 1}`}
-    // icon={renderItemIcon}
-    accessory={renderItemAccessory}
-  />
-);
-
-function PageArma({navigation}) {
   return (
-    <ApplicationProvider mapping={mapping} theme={lightTheme}>
-      <SafeAreaView style={styles.container}>
-        <View>
-          <View>
-            <ButtonUI
-              appearance={'filled'}
-              onPress={() => {
-                navigation.navigate('CadastroArma');
-              }}>
-              Cadastrar
-            </ButtonUI>
-            <ButtonUI
-              onPress={() => {
-                navigation.navigate('EditarArma');
-              }}>
-              Editar
-            </ButtonUI>
-          </View>
-          <View>
-            <List data={DATA} renderItem={renderItem} />
-          </View>
-        </View>
-      </SafeAreaView>
-    </ApplicationProvider>
+    <View>
+      <View>
+        <Button
+          appearance={'filled'}
+          onPress={() => {
+            navigation.navigate('CadastroArma');
+          }}>
+          Cadastrar
+        </Button>
+      </View>
+      <View>
+        <List data={DATA} renderItem={renderItem} />
+      </View>
+    </View>
   );
-}
+};
+
+PageArma.navigationOptions = {
+  title: 'Armas',
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // marginTop: Constants.statusBarHeight,
   },
   item: {
     backgroundColor: '#f9c2ff',
