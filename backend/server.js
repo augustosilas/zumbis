@@ -13,7 +13,7 @@ app.use(cors());
 // Iniciando o BD
 // É necessario passar a url de conexão com o mongodb
 // nodeapi: nome do schema a ser utilizado
-mongoose.connect('mongodb://localhost:27018/nodeapi', 
+mongoose.connect('mongodb://localhost:17017/nodeapi', 
 { useNewUrlParser: true });
 requireDir('./src/models')
 
@@ -26,4 +26,4 @@ const Zumbi = mongoose.model('Zumbi');          // Acesso a Zumbi: inserir, edit
 // 'use' é um coringa, aceita todo tipo de requisições
 app.use('/api', require('./src/routes'))
 
-app.listen(3003);
+app.listen(3003)
