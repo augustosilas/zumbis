@@ -1,33 +1,34 @@
 import * as React from 'react';
-import {Button, View, Text, StyleSheet} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {View, StyleSheet} from 'react-native';
+import {Button} from '@ui-kitten/components';
 
-function HomeScreen({navigation}) {
+const HomeScreen = ({navigation}) => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Button title="Arma" onPress={() => navigation.navigate('Arma')} />
-      <Separator />
       <Button
-        title="Armadura"
+        onPress={() => {
+          navigation.navigate('PageArma');
+        }}>
+        Arma
+      </Button>
+
+      <Button
         onPress={() => {
           navigation.navigate('Armadura');
-        }}
-      />
-      <Separator />
+        }}>
+        Armadura
+      </Button>
+
       <Button
         title="Zumbi"
         onPress={() => {
           navigation.navigate('Zumbi');
-        }}
-      />
+        }}>
+        Zumbi
+      </Button>
     </View>
   );
-}
-
-function Separator() {
-  return <View style={styles.separator} />;
-}
+};
 
 const styles = StyleSheet.create({
   separator: {
