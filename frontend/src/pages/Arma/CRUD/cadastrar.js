@@ -37,6 +37,12 @@ function cadastrar({navigation}) {
             // Fazer requisição da API
           }}
         />
+        <Button
+          title="Início"
+          onPress={() => {
+            navigation.navigate('Home');
+          }}
+        />
       </View>
     </View>
   );
