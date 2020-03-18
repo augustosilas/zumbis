@@ -7,11 +7,10 @@ import EditaZumbi from './pages/Zumbi/CRUD/editar';
 import PageArma from './pages/Arma/PageArma';
 import CadastroArma from './pages/Arma/CRUD/cadastrar';
 import EditarArma from './pages/Arma/CRUD/editar';
-import BuscaArma from './pages/Arma/CRUD/buscar';
 
 import PageArmadura from './pages/Armadura/PageArmadura';
 import CadastroArmadura from './pages/Armadura/CRUD/cadastrar';
-import BuscaArmadura from './pages/Armadura/CRUD/buscar';
+import EditaArmadura from './pages/Armadura/CRUD/editar';
 
 import {createStackNavigator} from 'react-navigation-stack';
 import {createAppContainer} from 'react-navigation';
@@ -19,19 +18,18 @@ import {createAppContainer} from 'react-navigation';
 const Routes = createAppContainer(
   createStackNavigator({
     PageHome: PageHome,
-    PageZumbi: PageZumbi,
-    CadastroZumbi: CadastroZumbi,
-    BuscaZumbi: BuscaZumbi,
-    EditaZumbi: EditaZumbi,
 
-    PageArma: PageArma,
+    PageHomeArma: PageArma,
     CadastroArma: CadastroArma,
     EditarArma: EditarArma,
-    BuscaArma: BuscaArma,
 
-    PageArmadura: PageArmadura,
+    PageHomeArmadura: PageArmadura,
     CadastroArmadura: CadastroArmadura,
-    BuscaArmadura: BuscaArmadura,
+    EditaArmadura: EditaArmadura,
+
+    PageHomeZumbi: PageZumbi,
+    CadastroZumbi: CadastroZumbi,
+    EditaZumbi: EditaZumbi,
   }),
 );
 
