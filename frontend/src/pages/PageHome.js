@@ -7,14 +7,14 @@ const HomeScreen = ({navigation}) => {
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Button
         onPress={() => {
-          navigation.navigate('PageArma');
+          navigation.navigate('PageHomeArma');
         }}>
         Arma
       </Button>
 
       <Button
         onPress={() => {
-          navigation.navigate('Armadura');
+          navigation.navigate('PageHomeArmadura');
         }}>
         Armadura
       </Button>
@@ -22,7 +22,7 @@ const HomeScreen = ({navigation}) => {
       <Button
         title="Zumbi"
         onPress={() => {
-          navigation.navigate('Zumbi');
+          navigation.navigate('PageHomeZumbi');
         }}>
         Zumbi
       </Button>
