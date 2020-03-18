@@ -1,30 +1,129 @@
-import React, {Component} from 'react';
-import {View, Button, Text} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 
-function PageZumbi() {
-  return (
+import {Button, List, ListItem} from '@ui-kitten/components';
+
+const DATA = [
+  [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      name: 'Bazuca',
+      calibri: 'nem sei',
+      dano: 'vish',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      name: 'Pistola',
+      calibri: '.40',
+      dano: 'eu hem',
+    },
+  ],
+  [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      nome: 'Casaco',
+      absorcao: 'já era',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      nome: 'Armadura de ferro',
+      absorcao: 'deu bom',
+    },
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      nome: 'Casaco',
+      absorcao: 'já era',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      nome: 'Armadura de ferro',
+      absorcao: 'deu bom',
+    },
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      nome: 'Casaco',
+      absorcao: 'já era',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      nome: 'Armadura de ferro',
+      absorcao: 'deu bom',
+    },
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      nome: 'Casaco',
+      absorcao: 'já era',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      nome: 'Armadura de ferro',
+      absorcao: 'deu bom',
+    },
+  ],
+];
+
+const PageZumbi = ({navigation}) => {
+  const armas = DATA[0];
+  const armaduras = DATA[1];
+  const onSelected = () => {
+    navigation.navigate('EditaZumbi');
+  };
+
+  const renderItemAccessory = (styles, index, item) => (
     <View>
-      <Text>Zumbi</Text>
-      <Button
-        title="Cadastrar"
-        onPress={() => {
-          'Cadastrar';
-        }}
-      />
-      <Button
-        title="Editar"
-        onPress={() => {
-          'Editar';
-        }}
-      />
-      <Button
-        title="Excluir"
-        onPress={() => {
-          'Excluir';
-        }}
-      />
+      <Button onPress={'remove'}>Deletar</Button>
     </View>
   );
-}
+
+  const renderArma = ({item, index}) => (
+    <ListItem
+      title={`${item.name}`}
+      description={`Calibri: ${item.calibri}\n Dano: ${item.dano}`}
+      accessory={() => renderItemAccessory(styles, index, item)}
+      onPress={onSelected}
+    />
+  );
+
+  const renderArmadura = ({item, index}) => (
+    <ListItem
+      title={`${item.nome}`}
+      description={`Absorção: ${item.absorcao}`}
+      accessory={() => renderItemAccessory(styles, index, item)}
+      onPress={onSelected}
+    />
+  );
+
+  return (
+    <>
+      <View>
+        <Button
+          appearance={'filled'}
+          onPress={() => {
+            navigation.navigate('CadastroZumbi');
+          }}>
+          Cadastrar
+        </Button>
+      </View>
+      <View>
+        <List data={armas} renderItem={renderArma} />
+      </View>
+      <View>
+        <List data={armaduras} renderItem={renderArmadura} />
+      </View>
+    </>
+  );
+};
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
+  },
+});
 
 export default PageZumbi;
