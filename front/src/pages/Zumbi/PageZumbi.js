@@ -63,9 +63,9 @@ const DATA = [
 ];
 
 const PageZumbi = ({navigation}) => {
-  let zumbi = DATA[0];
+  let zumbi = DATA;
   const onSelected = () => {
-    navigation.navigate('EditaZumbi');
+    navigation.navigate('CadastroZumbi');
   };
 
   const renderItemAccessory = (styles, index, item) => (
@@ -74,23 +74,19 @@ const PageZumbi = ({navigation}) => {
     </View>
   );
 
-  const renderArma = ({item, index}) => (
-    <ListItem
-      title={`${item.name}`}
-      description={`Calibri: ${item.calibri}\n Dano: ${item.dano}`}
-      accessory={() => renderItemAccessory(styles, index, item)}
-      onPress={onSelected}
-    />
-  );
+  const renderZumbi = ({item, index}) => {
+    const buildStringArmas = () => {};
+    const buildStringArmaduras = () => {};
 
-  const renderArmadura = ({item, index}) => (
-    <ListItem
-      title={`${item.nome}`}
-      description={`Absorção: ${item.absorcao}`}
-      accessory={() => renderItemAccessory(styles, index, item)}
-      onPress={onSelected}
-    />
-  );
+    return (
+      <ListItem
+        title={`Zumbi ${index}`}
+        description={`Armas: ${item.calibri}\n Armaduras: ${item.dano}`}
+        accessory={() => renderItemAccessory(styles, index, item)}
+        onPress={onSelected}
+      />
+    );
+  };
 
   return (
     <>
@@ -105,12 +101,8 @@ const PageZumbi = ({navigation}) => {
       </View>
       <Text>Armas</Text>
       <ScrollView>
-        <List data={zumbi} renderItem={renderArma} />
+        <List data={zumbi} renderItem={renderZumbi} />
       </ScrollView>
-      {/* <Text>Armaduras</Text>
-      <ScrollView>
-        <List data={armaduras} renderItem={renderArmadura} />
-      </ScrollView> */}
     </>
   );
 };
