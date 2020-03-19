@@ -34,7 +34,13 @@ function cadastrar({navigation}) {
           title="Adicionar"
           onPress={async () => {
             let armaJSON = await objToJSON(nome, calibri, dano);
-            // Fazer requisição da API
+            console.log(armaJSON);
+            fetch('http://localhost:3003/api/armas', {
+              method: 'GET',
+              // body: armaJSON,
+            }).then(resp => {
+              console.log(resp.json());
+            });
           }}
         />
         <Button
