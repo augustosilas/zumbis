@@ -1,32 +1,43 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  ScrollView,
-  ButtonGroup,
-} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native';
 
-import {Button, List, ListItem} from '@ui-kitten/components';
+import {Button, List, ListItem, CheckBox} from '@ui-kitten/components';
 
 const DATA = [
   [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      name: 'Bazuca',
+      nome: 'Bazuca',
       calibri: 'nem sei',
       dano: 'vish',
     },
     {
       id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      name: 'Pistola',
+      nome: 'Pistola',
       calibri: '.40',
       dano: 'eu hem',
     },
     {
       id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      name: 'Escopete',
+      nome: 'Escopeta',
+      calibri: 'Doze',
+      dano: 'Na cara não, pra não estragar o velório',
+    },
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      nome: 'Bazuca',
+      calibri: 'nem sei',
+      dano: 'vish',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      nome: 'Pistola',
+      calibri: '.40',
+      dano: 'eu hem',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      nome: 'Escopeta',
       calibri: 'Doze',
       dano: 'Na cara não, pra não estragar o velório',
     },
@@ -54,57 +65,36 @@ const cadastrar = ({navigation}) => {
   let armas = DATA[0];
   let armaduras = DATA[1];
 
-  const onSelectedArma = item => {
-    navigation.navigate('EditarArma', {values: item});
+  let zumbi = {
+    armas: [],
+    armaduras: [],
   };
 
-  const renderItemAccessory = (styles, index, item, state) => {
+  function Item(item) {
+    const [checked, setChecked] = React.useState(false);
+
+    const onCheckedChange = isChecked => {
+      setChecked(isChecked);
+      if (isChecked) {
+        zumbi.armas.push(item.title);
+        zumbi.armaduras.push(item.title);
+        console.log(zumbi);
+      }
+    };
     return (
-      <View>
-        {/* <ButtonGroup appearance="outline"> */}
-        <Button
-          onPress={() => {
-            '';
-          }}>
-          Remover
-        </Button>
-        <Button
-          disabled={state}
-          onPress={() => {
-            console.log(state);
-          }}>
-          Equipar
-        </Button>
-        {/* </ButtonGroup> */}
-      </View>
+      <CheckBox
+        text={item.title.nome}
+        checked={checked}
+        onChange={onCheckedChange}
+      />
     );
-  };
-
-  const renderArma = ({item, index}) => (
-    <ListItem
-      title={`${item.name}`}
-      description={`Calibri: ${item.calibri}\n Dano: ${item.dano}`}
-      accessory={() => renderItemAccessory(styles, index, item)}
-      onPress={() => onSelectedArma(item)}
-    />
-  );
-
-  const renderArmadura = ({item, index}) => (
-    <ListItem
-      title={`${item.nome}`}
-      description={`Absorção: ${item.absorcao}`}
-      accessory={() => renderItemAccessory(styles, index, item, false)}
-      // onPress={onSelected}
-    />
-  );
-
-  const [state, setState] = useState();
+  }
 
   return (
     <View>
       <View>
         <Button
-          // appearance={'filled'}
+          appearance={'filled'}
           onPress={() => {
             navigation.navigate('');
           }}>
@@ -112,13 +102,17 @@ const cadastrar = ({navigation}) => {
         </Button>
       </View>
       <Text>Armas</Text>
-      <ScrollView>
-        <List data={armas} renderItem={renderArma} />
-      </ScrollView>
+      <FlatList
+        data={armas}
+        numColumns={3}
+        renderItem={({item}) => <Item title={item} />}
+      />
       <Text>Armaduras</Text>
-      <ScrollView>
-        <List data={armaduras} renderItem={renderArmadura} />
-      </ScrollView>
+      <FlatList
+        data={armaduras}
+        numColumns={3}
+        renderItem={({item}) => <Item title={item} />}
+      />
     </View>
   );
 };
