@@ -1,0 +1,141 @@
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ScrollView,
+  ButtonGroup,
+} from 'react-native';
+
+import {Button, List, ListItem} from '@ui-kitten/components';
+
+const DATA = [
+  [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      name: 'Bazuca',
+      calibri: 'nem sei',
+      dano: 'vish',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      name: 'Pistola',
+      calibri: '.40',
+      dano: 'eu hem',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      name: 'Escopete',
+      calibri: 'Doze',
+      dano: 'Na cara não, pra não estragar o velório',
+    },
+  ],
+  [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      nome: 'Casaco',
+      absorcao: 'já era',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      nome: 'Armadura de ferro',
+      absorcao: 'deu bom',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      nome: 'Colete',
+      absorcao: 'bom de mais',
+    },
+  ],
+];
+
+const cadastrar = ({navigation}) => {
+  let armas = DATA[0];
+  let armaduras = DATA[1];
+
+  const onSelectedArma = item => {
+    navigation.navigate('EditarArma', {values: item});
+  };
+
+  const renderItemAccessory = (styles, index, item, state) => {
+    return (
+      <View>
+        {/* <ButtonGroup appearance="outline"> */}
+        <Button
+          onPress={() => {
+            '';
+          }}>
+          Remover
+        </Button>
+        <Button
+          disabled={state}
+          onPress={() => {
+            console.log(state);
+          }}>
+          Equipar
+        </Button>
+        {/* </ButtonGroup> */}
+      </View>
+    );
+  };
+
+  const renderArma = ({item, index}) => (
+    <ListItem
+      title={`${item.name}`}
+      description={`Calibri: ${item.calibri}\n Dano: ${item.dano}`}
+      accessory={() => renderItemAccessory(styles, index, item)}
+      onPress={() => onSelectedArma(item)}
+    />
+  );
+
+  const renderArmadura = ({item, index}) => (
+    <ListItem
+      title={`${item.nome}`}
+      description={`Absorção: ${item.absorcao}`}
+      accessory={() => renderItemAccessory(styles, index, item, false)}
+      // onPress={onSelected}
+    />
+  );
+
+  const [state, setState] = useState();
+
+  return (
+    <View>
+      <View>
+        <Button
+          // appearance={'filled'}
+          onPress={() => {
+            navigation.navigate('');
+          }}>
+          Criar Zumbi
+        </Button>
+      </View>
+      <Text>Armas</Text>
+      <ScrollView>
+        <List data={armas} renderItem={renderArma} />
+      </ScrollView>
+      <Text>Armaduras</Text>
+      <ScrollView>
+        <List data={armaduras} renderItem={renderArmadura} />
+      </ScrollView>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  title: {
+    fontSize: 32,
+  },
+});
+
+export default cadastrar;
