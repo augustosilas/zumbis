@@ -1,27 +1,45 @@
 import api from './api';
 import axios from 'axios';
 
+const header = {
+  headers: {
+    'content-type': 'application/json',
+  },
+};
+
 class Requests {
-  GET = async type => {
+  GET = async url => {
     try {
-      const response = await api.get(type);
+      const response = await api.get(url);
       return response;
     } catch (error) {
-      //   console.log(error._response);
+      console.log(error);
     }
   };
 
-  POST = async (obj, type) => {
+  POST = async (obj, url) => {
     try {
-      const response = await api.post(type, obj, {
-        headers: {
-          'content-type': 'application/json',
-        },
-      });
+      const response = await api.post(url, obj, header);
       return response;
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
     }
+  };
+
+  PUT = async (obj, url) => {
+    try {
+      const response = await api.put(url, obj, header);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  DELETE = async url => {
+    try {
+      const response = await api.delete(url);
+      return response;
+    } catch (error) {}
   };
 }
 
