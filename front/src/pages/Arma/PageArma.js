@@ -1,34 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 
 import {Button, List, ListItem, ButtonGroup} from '@ui-kitten/components';
 
 import Request from '../../services/requests';
 
-let DATA = [
-  // {
-  //   id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-  //   name: 'Bazuca',
-  //   calibri: 'nem sei',
-  //   dano: 'vish',
-  // },
-  // {
-  //   id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-  //   name: 'Pistola',
-  //   calibri: '.40',
-  //   dano: 'eu hem',
-  // },
-  // {
-  //   id: '58694a0f-3da1-471f-bd96-145571e29d72',
-  //   name: 'Escopete',
-  //   calibri: 'Doze',
-  //   dano: 'Na cara não, pra não estragar o velório',
-  // },
-];
+let DATA = [];
 
 const PageArma = ({navigation}) => {
-  const onSelected = item => {
-    navigation.navigate('EditarArma', {values: item});
+  const onSelected = async item => {
+    await navigation.navigate('EditarArma', {values: item});
   };
 
   const renderItem = ({item, index}) => (
@@ -43,11 +24,20 @@ const PageArma = ({navigation}) => {
   const renderItemAccessory = (style, index, item) => (
     <View>
       <ButtonGroup style={styles.buttonGroup} status="primary">
-        <Button onPress={() => onSelected(item)}>Editar</Button>
-        <Button onPress={'remove'}>Deletar</Button>
+        <Button onPress={async () => onSelected(item)}>Editar</Button>
+        <Button onPress={async () => deleteArmas(item)}>Deletar</Button>
       </ButtonGroup>
     </View>
   );
+
+  const deleteArmas = async item => {
+    console.log(item);
+    const id = item._id;
+    const url = `/armas/${id}`;
+
+    const request = new Request();
+    return await request.DELETE(url);
+  };
 
   const listArmas = async () => {
     const request = new Request();
@@ -56,6 +46,7 @@ const PageArma = ({navigation}) => {
     DATA = docs;
   };
   listArmas();
+
   return (
     <View>
       <View>
