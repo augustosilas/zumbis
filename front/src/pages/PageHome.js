@@ -6,23 +6,23 @@ const HomeScreen = ({navigation}) => {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Button
-        onPress={() => {
-          navigation.navigate('PageHomeArma');
+        onPress={async () => {
+          await navigation.navigate('PageHomeArma');
         }}>
         Arma
       </Button>
 
       <Button
-        onPress={() => {
-          navigation.navigate('PageHomeArmadura');
+        onPress={async () => {
+          await navigation.navigate('PageHomeArmadura');
         }}>
         Armadura
       </Button>
 
       <Button
         title="Zumbi"
-        onPress={() => {
-          navigation.navigate('PageHomeZumbi');
+        onPress={async () => {
+          await navigation.navigate('PageHomeZumbi');
         }}>
         Zumbi
       </Button>
