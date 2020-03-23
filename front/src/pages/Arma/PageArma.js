@@ -36,7 +36,11 @@ const PageArma = ({navigation}) => {
     const url = `/armas/${id}`;
 
     const request = new Request();
-    return await request.DELETE(url);
+    request.DELETE(url).then(async () => {
+      listArmas().then(async () => {
+        console.log('ok!');
+      });
+    });
   };
 
   const listArmas = async () => {
