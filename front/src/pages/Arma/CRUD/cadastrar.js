@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import {View, Button, Text, TextInput, StyleSheet} from 'react-native';
+import axios from 'axios';
+
+import Request from '../../../services/requests';
 
 function cadastrar({navigation}) {
   let [nome, setNome] = React.useState();
@@ -32,20 +35,11 @@ function cadastrar({navigation}) {
       <View>
         <Button
           title="Adicionar"
-          onPress={async () => {
-            let armaJSON = await objToJSON(nome, calibri, dano);
-            console.log(armaJSON);
-            fetch('http://localhost:3003/api/armas', {
-              method: 'GET',
-              // body: armaJSON,
-            }).then(resp => {
-              console.log(resp.json());
-            });
-          }}
+          onPress={async () => await createArmas(nome, calibri, dano)}
         />
         <Button
           title="Início"
-          onPress={() => {
+          onPress={async () => {
             navigation.navigate('Home');
           }}
         />
@@ -54,13 +48,16 @@ function cadastrar({navigation}) {
   );
 }
 
-let objToJSON = (nome, calibri, dano) => {
-  let obj = {
+const createArmas = async (nome, calibri, dano) => {
+  let arma = {
     nome,
     calibri,
     dano,
   };
-  return JSON.stringify(obj);
+
+  let armaJson = await JSON.stringify(arma);
+  const request = new Request();
+  return await request.POST(armaJson, '/armas');
 };
 
 export default cadastrar;
