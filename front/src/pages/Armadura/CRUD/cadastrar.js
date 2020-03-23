@@ -1,9 +1,23 @@
 import React, {useState} from 'react';
 import {View, Button, Text, TextInput, StyleSheet} from 'react-native';
 
+import Request from '../../../services/requests';
+
 const cadastrar = ({navigation}) => {
   const [nome, setNome] = useState();
   const [absorcao, setAbsorcao] = useState();
+
+  const createArmaduras = async () => {
+    let arma = {
+      nome,
+      absorcao,
+    };
+
+    let armaJson = await JSON.stringify(arma);
+
+    const request = new Request();
+    return await request.POST(armaJson, '/armaduras');
+  };
 
   return (
     <View>
@@ -23,24 +37,10 @@ const cadastrar = ({navigation}) => {
         />
       </View>
       <View>
-        <Button
-          title="Adicionar"
-          onPress={async () => {
-            let armaduraJSON = await objToJSON(nome, absorcao);
-            // Requisição da API
-          }}
-        />
+        <Button title="Adicionar" onPress={createArmaduras} />
       </View>
     </View>
   );
 };
 
-let objToJSON = (nome, absorcao) => {
-  let obj = {
-    nome,
-    absorcao,
-  };
-
-  return JSON.stringify(obj);
-};
 export default cadastrar;
