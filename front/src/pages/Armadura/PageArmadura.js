@@ -14,8 +14,8 @@ const PageArmadura = ({navigation}) => {
   const renderItemAccessory = (style, index, item) => (
     <View>
       <ButtonGroup style={styles.buttonGroup} status="primary">
-        <Button onPress={() => onSelected(item)}>Editar</Button>
-        <Button onPress={'remove'}>Deletar</Button>
+        <Button onPress={async () => onSelected(item)}>Editar</Button>
+        <Button onPress={async () => deleteArmaduras(item)}>Deletar</Button>
       </ButtonGroup>
     </View>
   );
@@ -24,10 +24,22 @@ const PageArmadura = ({navigation}) => {
     <ListItem
       title={`${item.nome}`}
       description={`Absorção: ${item.absorcao}`}
-      accessory={() => renderItemAccessory(item)}
+      accessory={() => renderItemAccessory(styles, index, item)}
       onPress={() => onSelected(item)}
     />
   );
+
+  const deleteArmaduras = async item => {
+    const id = item._id;
+    const url = `/armaduras/${id}`;
+
+    const request = new Request();
+    request.DELETE(url).then(async () => {
+      listArmaduras().then(async () => {
+        console.log('ok!');
+      });
+    });
+  };
 
   const listArmaduras = async () => {
     const request = new Request();
@@ -36,6 +48,7 @@ const PageArmadura = ({navigation}) => {
     console.log(docs);
     DATA = docs;
   };
+
   listArmaduras();
 
   return (
