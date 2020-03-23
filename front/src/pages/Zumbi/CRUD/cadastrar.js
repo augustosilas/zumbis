@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, Component} from 'react';
 import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native';
 
 import {Button, List, ListItem, CheckBox} from '@ui-kitten/components';
+
+import Request from '../../../services/requests';
 
 const DATA = [
   [
@@ -61,61 +63,130 @@ const DATA = [
   ],
 ];
 
-const cadastrar = ({navigation}) => {
-  let armas = DATA[0];
-  let armaduras = DATA[1];
-
-  let zumbi = {
+export default class cadastrar extends Component {
+  state = {
     armas: [],
-    armaduras: [],
+    // armaduras: [],
   };
 
-  function Item(item) {
-    const [checked, setChecked] = React.useState(false);
-
-    const onCheckedChange = isChecked => {
-      setChecked(isChecked);
-      if (isChecked) {
-        zumbi.armas.push(item.title);
-        zumbi.armaduras.push(item.title);
-        console.log(zumbi);
-      }
-    };
-    return (
-      <CheckBox
-        text={item.title.nome}
-        checked={checked}
-        onChange={onCheckedChange}
-      />
-    );
+  componentDidMount() {
+    this.listArmas();
+    this.listArmaduras();
   }
 
-  return (
-    <View>
+  listArmas = async () => {
+    const request = new Request();
+    const response = await request.GET('/armas');
+    const {docs} = response.data;
+    this.setState({armas: docs});
+  };
+
+  listArmaduras = async () => {
+    const request = new Request();
+    const response = await request.GET('/armaduras');
+    const {docs} = response.data;
+    this.setState({armaduras: docs});
+  };
+
+  render() {
+    return (
       <View>
-        <Button
-          appearance={'filled'}
-          onPress={() => {
-            navigation.navigate('');
-          }}>
-          Criar Zumbi
-        </Button>
+        <View>
+          <Button appearance={'filled'} onPress={'cadastrar'}>
+            Criar Zumbi
+          </Button>
+        </View>
+        <Text>Armas</Text>
+        <FlatList
+          data={this.state.armas}
+          numColumns={3}
+          renderItem={({item}) => <Item title={item} />}
+        />
+        <Text>Armaduras</Text>
+        <FlatList
+          data={this.state.armaduras}
+          numColumns={3}
+          renderItem={({item}) => <Item title={item} />}
+        />
       </View>
-      <Text>Armas</Text>
-      <FlatList
-        data={armas}
-        numColumns={3}
-        renderItem={({item}) => <Item title={item} />}
-      />
-      <Text>Armaduras</Text>
-      <FlatList
-        data={armaduras}
-        numColumns={3}
-        renderItem={({item}) => <Item title={item} />}
-      />
-    </View>
+    );
+  }
+}
+
+function Item(item) {
+  const [checked, setChecked] = React.useState(false);
+
+  const onCheckedChange = isChecked => {
+    setChecked(isChecked);
+    // if (isChecked) {
+    //   zumbi.armas.push(item.title);
+    //   zumbi.armaduras.push(item.title);
+    //   console.log(zumbi);
+    // }
+  };
+  return (
+    <CheckBox
+      text={item.title.nome}
+      checked={checked}
+      onChange={onCheckedChange}
+    />
   );
-};
+}
+
+// const cadastrar = ({navigation}) =>
+// class cadastrar {
+//   let armas = DATA[0];
+//   let armaduras = DATA[1];
+
+//   let zumbi = {
+//     armas: [],
+//     armaduras: [],
+//   };
+
+// function Item(item) {
+//   const [checked, setChecked] = React.useState(false);
+
+//   const onCheckedChange = isChecked => {
+//     setChecked(isChecked);
+//     if (isChecked) {
+//       zumbi.armas.push(item.title);
+//       zumbi.armaduras.push(item.title);
+//       console.log(zumbi);
+//     }
+//   };
+//   return (
+//     <CheckBox
+//       text={item.title.nome}
+//       checked={checked}
+//       onChange={onCheckedChange}
+//     />
+//   );
+// }
+
+//   render() {
+//   return (
+//     <View>
+//       <View>
+//         <Button appearance={'filled'} onPress={'cadastrar'}>
+//           Criar Zumbi
+//         </Button>
+//       </View>
+//       <Text>Armas</Text>
+//       <FlatList
+//         data={armas}
+//         numColumns={3}
+//         renderItem={({item}) => <Item title={item} />}
+//       />
+//       <Text>Armaduras</Text>
+//       <FlatList
+//         data={armaduras}
+//         numColumns={3}
+//         renderItem={({item}) => <Item title={item} />}
+//       />
+//     </View>
+//   );
+//   }
+// };
 
 const styles = StyleSheet.create({
   container: {
@@ -131,5 +202,3 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
 });
-
-export default cadastrar;
