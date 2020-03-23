@@ -5,7 +5,7 @@ class Requests {
   GET = async type => {
     try {
       const response = await api.get(type);
-      console.log(response.status);
+      return response;
     } catch (error) {
       //   console.log(error._response);
     }
