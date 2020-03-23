@@ -3,6 +3,8 @@ import {View, StyleSheet} from 'react-native';
 
 import {Button, List, ListItem, ButtonGroup} from '@ui-kitten/components';
 
+import Request from '../../services/requests';
+
 let DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
@@ -47,6 +49,12 @@ const PageArma = ({navigation}) => {
     </View>
   );
 
+  const listArmas = async () => {
+    const request = new Request();
+    const result = await request.GET('/armas');
+    // console.log(result);
+  };
+  listArmas();
   return (
     <View>
       <View>
