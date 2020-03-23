@@ -133,61 +133,6 @@ function Item(item) {
   );
 }
 
-// const cadastrar = ({navigation}) =>
-// class cadastrar {
-//   let armas = DATA[0];
-//   let armaduras = DATA[1];
-
-//   let zumbi = {
-//     armas: [],
-//     armaduras: [],
-//   };
-
-// function Item(item) {
-//   const [checked, setChecked] = React.useState(false);
-
-//   const onCheckedChange = isChecked => {
-//     setChecked(isChecked);
-//     if (isChecked) {
-//       zumbi.armas.push(item.title);
-//       zumbi.armaduras.push(item.title);
-//       console.log(zumbi);
-//     }
-//   };
-//   return (
-//     <CheckBox
-//       text={item.title.nome}
-//       checked={checked}
-//       onChange={onCheckedChange}
-//     />
-//   );
-// }
-
-//   render() {
-//   return (
-//     <View>
-//       <View>
-//         <Button appearance={'filled'} onPress={'cadastrar'}>
-//           Criar Zumbi
-//         </Button>
-//       </View>
-//       <Text>Armas</Text>
-//       <FlatList
-//         data={armas}
-//         numColumns={3}
-//         renderItem={({item}) => <Item title={item} />}
-//       />
-//       <Text>Armaduras</Text>
-//       <FlatList
-//         data={armaduras}
-//         numColumns={3}
-//         renderItem={({item}) => <Item title={item} />}
-//       />
-//     </View>
-//   );
-//   }
-// };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
