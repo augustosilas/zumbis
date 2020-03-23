@@ -1,19 +1,36 @@
 import React, {Component, useEffect} from 'react';
 import {View, Button, Text, TextInput, StyleSheet} from 'react-native';
 
+import Request from '../../../services/requests';
+
 const editar = ({navigation}) => {
   let [nome, setNome] = React.useState();
   let [calibri, setCalibri] = React.useState();
   let [dano, setDano] = React.useState();
 
   const values = navigation.getParam('values');
-  console.log(values);
+
   // useEffect reenderiza uma vez mas caso haja alteração reenderiza novamente
   useEffect(() => {
-    setNome(values.name);
-    setCalibri(values.calibri);
-    setDano(values.dano);
+    setNome(values.nome);
+    setCalibri(String(values.calibri));
+    setDano(String(values.dano));
   }, [values]);
+
+  const updateArmas = async () => {
+    let arma = {
+      nome,
+      calibri,
+      dano,
+    };
+    let id = values._id;
+    let url = `/armas/${id}`;
+
+    let armaJson = await JSON.stringify(arma);
+
+    const request = new Request();
+    return await request.PUT(armaJson, url);
+  };
 
   return (
     <View>
@@ -39,14 +56,7 @@ const editar = ({navigation}) => {
         />
       </View>
       <View>
-        <Button
-          title="Alterar"
-          onPress={async () => {
-            let obj = buildJSON(nome, calibri, dano);
-            let armaJSON = await objToJSON(obj);
-            // Fazer requisição da API
-          }}
-        />
+        <Button title="Alterar" onPress={updateArmas} />
         <Button
           title="Início"
           onPress={() => {
