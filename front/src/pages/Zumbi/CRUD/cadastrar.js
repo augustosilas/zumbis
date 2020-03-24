@@ -5,68 +5,15 @@ import {Button, List, ListItem, CheckBox} from '@ui-kitten/components';
 
 import Request from '../../../services/requests';
 
-const DATA = [
-  [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      nome: 'Bazuca',
-      calibri: 'nem sei',
-      dano: 'vish',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      nome: 'Pistola',
-      calibri: '.40',
-      dano: 'eu hem',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      nome: 'Escopeta',
-      calibri: 'Doze',
-      dano: 'Na cara não, pra não estragar o velório',
-    },
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      nome: 'Bazuca',
-      calibri: 'nem sei',
-      dano: 'vish',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      nome: 'Pistola',
-      calibri: '.40',
-      dano: 'eu hem',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      nome: 'Escopeta',
-      calibri: 'Doze',
-      dano: 'Na cara não, pra não estragar o velório',
-    },
-  ],
-  [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      nome: 'Casaco',
-      absorcao: 'já era',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      nome: 'Armadura de ferro',
-      absorcao: 'deu bom',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      nome: 'Colete',
-      absorcao: 'bom de mais',
-    },
-  ],
-];
+var zumbi = {
+  arma: [],
+  armadura: [],
+};
 
 export default class cadastrar extends Component {
   state = {
     armas: [],
-    // armaduras: [],
+    armaduras: [],
   };
 
   componentDidMount() {
@@ -88,11 +35,19 @@ export default class cadastrar extends Component {
     this.setState({armaduras: docs});
   };
 
+  createZumbi = async () => {
+    var url = '/zumbi';
+    const request = new Request();
+    await request.POST(zumbi, url);
+  };
+
   render() {
     return (
       <View>
         <View>
-          <Button appearance={'filled'} onPress={'cadastrar'}>
+          <Button
+            appearance={'filled'}
+            onPress={async () => await this.createZumbi()}>
             Criar Zumbi
           </Button>
         </View>
@@ -100,12 +55,14 @@ export default class cadastrar extends Component {
         <FlatList
           data={this.state.armas}
           numColumns={3}
+          keyExtractor={key => key._id}
           renderItem={({item}) => <Item title={item} />}
         />
         <Text>Armaduras</Text>
         <FlatList
           data={this.state.armaduras}
           numColumns={3}
+          keyExtractor={key => key._id}
           renderItem={({item}) => <Item title={item} />}
         />
       </View>
@@ -118,11 +75,16 @@ function Item(item) {
 
   const onCheckedChange = isChecked => {
     setChecked(isChecked);
-    // if (isChecked) {
-    //   zumbi.armas.push(item.title);
-    //   zumbi.armaduras.push(item.title);
-    //   console.log(zumbi);
-    // }
+    if (isChecked) {
+      var {title} = item;
+
+      if (title.absorcao !== undefined) {
+        zumbi.armadura.push(title);
+      } else {
+        zumbi.arma.push(title);
+      }
+      console.log(zumbi);
+    }
   };
   return (
     <CheckBox
