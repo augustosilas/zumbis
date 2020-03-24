@@ -39,7 +39,9 @@ class Requests {
     try {
       const response = await api.delete(url);
       return response;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
 
