@@ -1,73 +1,86 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, Component} from 'react';
 import {View, StyleSheet} from 'react-native';
 
 import {Button, List, ListItem, ButtonGroup} from '@ui-kitten/components';
 
 import Request from '../../services/requests';
 
-let DATA = [];
-
-const PageArma = ({navigation}) => {
-  const onSelected = async item => {
-    await navigation.navigate('EditarArma', {values: item});
+export default class PageArma extends Component {
+  state = {
+    armas: [],
   };
 
-  const renderItem = ({item, index}) => (
-    <ListItem
-      title={`${item.nome}`}
-      description={`Calibri: ${item.calibri} \n Dano: ${item.dano}`}
-      accessory={() => renderItemAccessory(styles, index, item)}
-      onPress={() => onSelected(item)}
-    />
-  );
+  componentDidMount() {
+    this.listArmas();
+  }
 
-  const renderItemAccessory = (style, index, item) => (
-    <View>
-      <ButtonGroup style={styles.buttonGroup} status="primary">
-        <Button onPress={async () => onSelected(item)}>Editar</Button>
-        <Button onPress={async () => deleteArmas(item)}>Deletar</Button>
-      </ButtonGroup>
-    </View>
-  );
+  onSelected = item => {
+    this.props.navigation.navigate('EditarArma', {values: item});
+  };
 
-  const deleteArmas = async item => {
+  renderItem = ({item, index}) => {
+    return (
+      <ListItem
+        title={`${item.nome}`}
+        description={`Calibri: ${item.calibri} \n Dano: ${item.dano}`}
+        accessory={() => this.renderItemAccessory(styles, index, item)}
+        onPress={() => this.onSelected(item)}
+      />
+    );
+  };
+
+  renderItemAccessory = (styles, index, item) => {
+    return (
+      <View>
+        <ButtonGroup style={styles.buttonGroup} status="primary">
+          <Button onPress={() => this.onSelected(item)}>Editar</Button>
+          <Button onPress={async () => await this.deleteArmas(item)}>
+            Deletar
+          </Button>
+        </ButtonGroup>
+      </View>
+    );
+  };
+
+  deleteArmas = async item => {
     console.log(item);
     const id = item._id;
     const url = `/armas/${id}`;
 
     const request = new Request();
     request.DELETE(url).then(async () => {
-      listArmas().then(async () => {
+      this.listArmas().then(async () => {
         console.log('ok!');
       });
     });
   };
 
-  const listArmas = async () => {
+  listArmas = async () => {
     const request = new Request();
     const response = await request.GET('/armas');
     const {docs} = response.data;
-    DATA = docs;
+    this.setState({armas: docs});
   };
-  listArmas();
 
-  return (
-    <View>
+  render() {
+    return (
       <View>
-        <Button
-          appearance={'filled'}
-          onPress={() => {
-            navigation.navigate('CadastroArma');
-          }}>
-          Cadastrar
-        </Button>
+        <View>
+          <Button
+            appearance={'filled'}
+            onPress={async () => {
+              this.props.navigation.navigate('CadastroArma');
+            }}>
+            Cadastrar
+          </Button>
+        </View>
+        <View>
+          <List data={this.state.armas} renderItem={this.renderItem} />
+        </View>
       </View>
-      <View>
-        <List data={DATA} renderItem={renderItem} />
-      </View>
-    </View>
-  );
-};
+    );
+  }
+}
 
 PageArma.navigationOptions = {
   title: 'Armas',
@@ -88,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PageArma;
+// export default PageArma;
