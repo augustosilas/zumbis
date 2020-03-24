@@ -44,6 +44,7 @@ module.exports = {
   },
 
   async destroy(req, res) {
+    console.log(req);
     await Zumbi.findByIdAndRemove(req.params.id);
 
     return res.send();

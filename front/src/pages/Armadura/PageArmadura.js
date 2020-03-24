@@ -32,6 +32,7 @@ const PageArmadura = ({navigation}) => {
   const deleteArmaduras = async item => {
     const id = item._id;
     const url = `/armaduras/${id}`;
+    console.log(url);
 
     const request = new Request();
     request.DELETE(url).then(async () => {
@@ -45,7 +46,6 @@ const PageArmadura = ({navigation}) => {
     const request = new Request();
     const response = await request.GET('/armaduras');
     const {docs} = response.data;
-    console.log(docs);
     DATA = docs;
   };
 

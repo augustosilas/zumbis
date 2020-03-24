@@ -1,12 +1,59 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import React, {Component, useEffect} from 'react';
+import {View, Text, StyleSheet, FlatList, ScrollView} from 'react-native';
 
 import {Button, List, ListItem} from '@ui-kitten/components';
 
+import Request from '../../services/requests';
+
 export default class PageZumbi extends Component {
   state = {
-    zumbi: {arma: [], armadura: []},
+    zumbi: [],
   };
+
+  componentDidMount() {
+    this.listZumbi();
+  }
+
+  listZumbi = async () => {
+    var url = '/zumbi';
+    const request = new Request();
+    const dados = await request.GET(url);
+    const {docs} = dados.data;
+    this.setState({zumbi: docs});
+  };
+
+  deleteZumbi = async item => {
+    var id = item._id;
+    var url = `/zumbi/${id}`;
+
+    const request = new Request();
+    request.DELETE(url).then(async () => {
+      this.listZumbi().then(async () => {
+        console.log('ok!');
+      });
+    });
+  };
+
+  renderItemAccessory(styles, index, item) {
+    return (
+      <View>
+        <Button onPress={async () => await this.deleteZumbi(item)}>
+          Deletar
+        </Button>
+      </View>
+    );
+  }
+
+  renderZumbi({item, index}) {
+    return (
+      <ListItem
+        title={`Zumbi ${index}`}
+        description={`Armas: ${item.arma}\n Armaduras: ${item.armadura}`}
+        accessory={() => this.renderItemAccessory(styles, index, item)}
+        // onPress={this.props.navigation.navigate('CadastroZumbi')}
+      />
+    );
+  }
 
   render() {
     return (
@@ -14,38 +61,20 @@ export default class PageZumbi extends Component {
         <View>
           <Button
             appearance={'filled'}
-            onPress={() => {
-              this.props.navigation.navigate('CadastroZumbi');
-            }}>
+            // onPress={this.props.navigation.navigate('CadastroZumbi')}
+          >
             Cadastrar
           </Button>
         </View>
-        <FlatList
-          data={}
-          keyExtractor={key => key.id}
-          renderItem={''}></FlatList>
+        <ScrollView>
+          <List
+            data={this.state.zumbi}
+            renderItem={item => this.renderZumbi(item)}
+          />
+        </ScrollView>
       </>
     );
   }
-}
-
-function renderItemAccessory(styles, index, item) {
-  return (
-    <View>
-      <Button onPress={'remove'}>Deletar</Button>
-    </View>
-  );
-}
-
-function renderZumbi({item, index}) {
-  return (
-    <ListItem
-      title={`Zumbi ${index}`}
-      description={`Armas: ${item.calibri}\n Armaduras: ${item.dano}`}
-      accessory={() => renderItemAccessory(styles, index, item)}
-      onPress={onSelected}
-    />
-  );
 }
 
 // const PageZumbi = ({navigation}) => {
