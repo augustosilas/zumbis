@@ -50,7 +50,7 @@ export default class PageZumbi extends Component {
         title={`Zumbi ${index}`}
         description={`Armas: ${item.arma}\n Armaduras: ${item.armadura}`}
         accessory={() => this.renderItemAccessory(styles, index, item)}
-        // onPress={this.props.navigation.navigate('CadastroZumbi')}
+        // onPress={() => this.props.navigation.navigate('CadastroZumbi')}
       />
     );
   }
@@ -61,14 +61,14 @@ export default class PageZumbi extends Component {
         <View>
           <Button
             appearance={'filled'}
-            // onPress={this.props.navigation.navigate('CadastroZumbi')}
-          >
+            onPress={() => this.props.navigation.navigate('CadastroZumbi')}>
             Cadastrar
           </Button>
         </View>
         <ScrollView>
           <List
             data={this.state.zumbi}
+            keyExtractor={item => item._id}
             renderItem={item => this.renderZumbi(item)}
           />
         </ScrollView>
@@ -76,48 +76,6 @@ export default class PageZumbi extends Component {
     );
   }
 }
-
-// const PageZumbi = ({navigation}) => {
-//   let zumbi = DATA;
-//   const onSelected = () => {
-//     navigation.navigate('CadastroZumbi');
-//   };
-
-// const renderItemAccessory = (styles, index, item) => (
-//   <View>
-//     <Button onPress={'remove'}>Deletar</Button>
-//   </View>
-// );
-
-// const renderZumbi = ({item, index}) => {
-//   return (
-//     <ListItem
-//       title={`Zumbi ${index}`}
-//       description={`Armas: ${item.calibri}\n Armaduras: ${item.dano}`}
-//       accessory={() => renderItemAccessory(styles, index, item)}
-//       onPress={onSelected}
-//     />
-//   );
-// };
-
-//   return (
-// <>
-//   <View>
-//     <Button
-//       appearance={'filled'}
-//       onPress={() => {
-//         navigation.navigate('CadastroZumbi');
-//       }}>
-//       Cadastrar
-//     </Button>
-//   </View>
-//   <Text>Armas</Text>
-//   <ScrollView>
-//     <List data={zumbi} renderItem={renderZumbi} />
-//   </ScrollView>
-// </>
-//   );
-// };
 
 const styles = StyleSheet.create({
   item: {
@@ -130,5 +88,3 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
 });
-
-// export default PageZumbi;

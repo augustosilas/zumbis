@@ -5,69 +5,83 @@ import Request from '../../services/requests';
 
 import {Button, ButtonGroup, List, ListItem} from '@ui-kitten/components';
 
-let DATA = [];
-
-const PageArmadura = ({navigation}) => {
-  const onSelected = item => {
-    navigation.navigate('EditaArmadura', {values: item});
+export default class PageArmadura extends Component {
+  state = {
+    armaduras: [],
   };
-  const renderItemAccessory = (style, index, item) => (
+
+  componentDidMount() {
+    this.listArmaduras();
+  }
+
+  onSelected = item => {
+    this.props.navigation.navigate('EditaArmadura', {values: item});
+  };
+
+  renderItemAccessory = (style, index, item) => (
     <View>
       <ButtonGroup style={styles.buttonGroup} status="primary">
-        <Button onPress={async () => onSelected(item)}>Editar</Button>
-        <Button onPress={async () => deleteArmaduras(item)}>Deletar</Button>
+        <Button onPress={async () => await this.onSelected(item)}>
+          Editar
+        </Button>
+        <Button onPress={async () => await this.deleteArmaduras(item)}>
+          Deletar
+        </Button>
       </ButtonGroup>
     </View>
   );
 
-  const renderItem = ({item, index}) => (
+  renderItem = ({item, index}) => (
     <ListItem
       title={`${item.nome}`}
       description={`Absorção: ${item.absorcao}`}
-      accessory={() => renderItemAccessory(styles, index, item)}
-      onPress={() => onSelected(item)}
+      accessory={() => this.renderItemAccessory(styles, index, item)}
+      onPress={() => this.onSelected(item)}
     />
   );
 
-  const deleteArmaduras = async item => {
+  deleteArmaduras = async item => {
     const id = item._id;
     const url = `/armaduras/${id}`;
-    console.log(url);
 
     const request = new Request();
     request.DELETE(url).then(async () => {
-      listArmaduras().then(async () => {
+      this.listArmaduras().then(async () => {
         console.log('ok!');
       });
     });
   };
 
-  const listArmaduras = async () => {
+  listArmaduras = async () => {
     const request = new Request();
     const response = await request.GET('/armaduras');
     const {docs} = response.data;
-    DATA = docs;
+    this.setState({armaduras: docs});
   };
 
-  listArmaduras();
-
-  return (
-    <View>
+  render() {
+    return (
       <View>
-        <Button
-          appearance={'filled'}
-          onPress={() => {
-            navigation.navigate('CadastroArmadura');
-          }}>
-          Cadastrar
-        </Button>
+        <View>
+          <Button
+            appearance={'filled'}
+            onPress={() => {
+              this.props.navigation.navigate('CadastroArmadura');
+            }}>
+            Cadastrar
+          </Button>
+        </View>
+        <View>
+          <List
+            data={this.state.armaduras}
+            renderItem={item => this.renderItem(item)}
+            keyExtractor={item => item.id}
+          />
+        </View>
       </View>
-      <View>
-        <List data={DATA} renderItem={renderItem} />
-      </View>
-    </View>
-  );
-};
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -89,4 +103,4 @@ PageArmadura.navigationOptions = {
   title: 'Armaduras',
 };
 
-export default PageArmadura;
+// export default PageArmadura;
