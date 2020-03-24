@@ -1,7 +1,7 @@
 import React, {Component, useEffect} from 'react';
 import {View, Text, StyleSheet, FlatList, ScrollView} from 'react-native';
 
-import {Button, List, ListItem} from '@ui-kitten/components';
+import {Button, List, ListItem, ButtonGroup} from '@ui-kitten/components';
 
 import Request from '../../services/requests';
 
@@ -13,6 +13,10 @@ export default class PageZumbi extends Component {
   componentDidMount() {
     this.listZumbi();
   }
+
+  onSelected = item => {
+    this.props.navigation.navigate('EditaZumbi', {values: item});
+  };
 
   listZumbi = async () => {
     var url = '/zumbi';
@@ -36,11 +40,12 @@ export default class PageZumbi extends Component {
 
   renderItemAccessory(styles, index, item) {
     return (
-      <View>
+      <ButtonGroup style={styles.buttonGroup} status="primary">
+        <Button onPress={() => this.onSelected(item)}>Editar</Button>
         <Button onPress={async () => await this.deleteZumbi(item)}>
           Deletar
         </Button>
-      </View>
+      </ButtonGroup>
     );
   }
 
@@ -50,7 +55,7 @@ export default class PageZumbi extends Component {
         title={`Zumbi ${index}`}
         description={`Armas: ${item.arma}\n Armaduras: ${item.armadura}`}
         accessory={() => this.renderItemAccessory(styles, index, item)}
-        // onPress={() => this.props.navigation.navigate('CadastroZumbi')}
+        onPress={() => this.props.navigation.navigate('EditaZumbi')}
       />
     );
   }
