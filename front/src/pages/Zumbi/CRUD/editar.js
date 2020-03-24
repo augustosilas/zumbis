@@ -37,10 +37,11 @@ export default class editar extends Component {
     this.setState({armaduras: docs});
   };
 
-  createZumbi = async () => {
-    var url = '/zumbi';
+  updateZumbi = async () => {
+    var id = this.values_id;
+    var url = `/zumbi/${id}`;
     const request = new Request();
-    await request.POST(zumbi, url);
+    await request.PUT(zumbi, url);
   };
 
   render() {
@@ -49,7 +50,7 @@ export default class editar extends Component {
         <View>
           <Button
             appearance={'filled'}
-            onPress={async () => await this.createZumbi()}>
+            onPress={async () => await this.updateZumbi()}>
             Alterar
           </Button>
         </View>
