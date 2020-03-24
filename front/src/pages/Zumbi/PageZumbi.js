@@ -53,11 +53,26 @@ export default class PageZumbi extends Component {
     return (
       <ListItem
         title={`Zumbi ${index}`}
-        description={`Armas: ${item.arma}\n Armaduras: ${item.armadura}`}
+        description={this.showString(item)}
         accessory={() => this.renderItemAccessory(styles, index, item)}
         onPress={() => this.props.navigation.navigate('EditaZumbi')}
       />
     );
+  }
+
+  showString(item) {
+    const {arma, armadura} = item;
+    let arm = '';
+    let armadur = '';
+    arma.forEach(element => {
+      arm += element.nome + ' ';
+    });
+
+    armadura.forEach(element => {
+      armadur += element.nome + ' ';
+    });
+
+    return `Armas: ${arm} \nArmaduras: ${armadur}`;
   }
 
   render() {
