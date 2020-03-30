@@ -1,104 +1,86 @@
-import React, {useEffect, Component} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
-import {Button, List, ListItem, ButtonGroup} from '@ui-kitten/components';
-
+import styles from './styles';
 import Request from '../../services/requests';
 
-export default class PageArma extends Component {
-  state = {
-    armas: [],
-  };
+import logoArma from '../../../assets/logoArma.jpg';
 
-  componentDidMount() {
-    this.listArmas();
+export default function PageArma() {
+  const [armas, setArmas] = useState([]);
+
+  useEffect(() => {
+    setArmas(listArmas());
+  }, []);
+
+  const navigation = useNavigation();
+
+  function onSelected(item) {
+    navigation.navigate('EditarArma', {values: item});
   }
 
-  onSelected = item => {
-    this.props.navigation.navigate('EditarArma', {values: item});
-  };
-
-  renderItem = ({item, index}) => {
+  function renderItem({item, index}) {
     return (
       <ListItem
         title={`${item.nome}`}
         description={`Calibri: ${item.calibri} \n Dano: ${item.dano}`}
-        accessory={() => this.renderItemAccessory(styles, index, item)}
-        onPress={() => this.onSelected(item)}
+        accessory={() => renderItemAccessory(styles, index, item)}
+        onPress={() => onSelected(item)}
       />
     );
-  };
+  }
 
-  renderItemAccessory = (styles, index, item) => {
+  function renderItemAccessory(styles, index, item) {
     return (
       <View>
-        <ButtonGroup style={styles.buttonGroup} status="primary">
-          <Button onPress={() => this.onSelected(item)}>Editar</Button>
-          <Button onPress={async () => await this.deleteArmas(item)}>
-            Deletar
-          </Button>
-        </ButtonGroup>
+        {/* <ButtonGroup style={styles.buttonGroup} status="primary">
+          <Button onPress={() => onSelected(item)}>Editar</Button>
+          <Button onPress={async () => await deleteArmas(item)}>Deletar</Button>
+        </ButtonGroup> */}
       </View>
     );
-  };
+  }
 
-  deleteArmas = async item => {
+  async function deleteArmas(item) {
     console.log(item);
     const id = item._id;
     const url = `/armas/${id}`;
 
     const request = new Request();
     request.DELETE(url).then(async () => {
-      this.listArmas().then(async () => {
+      listArmas().then(async () => {
         console.log('ok!');
       });
     });
-  };
+  }
 
-  listArmas = async () => {
+  async function listArmas() {
     const request = new Request();
     const response = await request.GET('/armas');
     const {docs} = response.data;
-    this.setState({armas: docs});
-  };
-
-  render() {
-    return (
-      <View>
-        <View>
-          <Button
-            appearance={'filled'}
-            onPress={async () => {
-              this.props.navigation.navigate('CadastroArma');
-            }}>
-            Cadastrar
-          </Button>
-        </View>
-        <View>
-          <List data={this.state.armas} renderItem={this.renderItem} />
-        </View>
-      </View>
-    );
+    return docs;
+    // setState({armas: docs});
   }
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Image style={styles.headerLogo} source={logoArma} />
+        <Text style={styles.headerText}>
+          Cadastre, edite, remova e veja suas armas.
+        </Text>
+      </View>
+      <View>
+        <TouchableOpacity
+          style={styles.action}
+          onPress={() => {
+            navigation.navigate('CadastroArma');
+          }}>
+          <Text style={styles.actionText}>Cadastrar</Text>
+        </TouchableOpacity>
+      </View>
+      <View />
+    </View>
+  );
 }
-
-PageArma.navigationOptions = {
-  title: 'Armas',
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});
-
-// export default PageArma;
