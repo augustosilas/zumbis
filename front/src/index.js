@@ -1,16 +1,6 @@
 import React from 'react';
-import Route from './routes';
-import {ApplicationProvider} from '@ui-kitten/components';
-import {mapping, light as lightTheme} from '@eva-design/eva';
+import Routes from './routes';
 
-function App() {
-  return (
-    <>
-      <ApplicationProvider mapping={mapping} theme={lightTheme}>
-        <Route />
-      </ApplicationProvider>
-    </>
-  );
+export default function App() {
+  return <Routes />;
 }
-
-export default App;
