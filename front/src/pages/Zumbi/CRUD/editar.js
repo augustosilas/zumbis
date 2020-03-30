@@ -1,7 +1,7 @@
 import React, {useState, Component} from 'react';
-import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native';
+import {View, Text, StyleSheet, FlatList} from 'react-native';
 
-import {Button, List, ListItem, CheckBox} from '@ui-kitten/components';
+import {Button, CheckBox} from '@ui-kitten/components';
 
 import Request from '../../../services/requests';
 
