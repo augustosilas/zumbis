@@ -6,12 +6,13 @@ import styles from './styles';
 import Request from '../../services/requests';
 
 import logoArma from '../../../assets/logoArma.jpg';
+import iconEdit from '../../../assets/edit.svg';
 
 export default function PageArma() {
   const [armas, setArmas] = useState([]);
 
   useEffect(() => {
-    setArmas(listArmas());
+    listArmas();
   }, []);
 
   const navigation = useNavigation();
@@ -20,30 +21,7 @@ export default function PageArma() {
     navigation.navigate('EditarArma', {values: item});
   }
 
-  function renderItem({item, index}) {
-    return (
-      <ListItem
-        title={`${item.nome}`}
-        description={`Calibri: ${item.calibri} \n Dano: ${item.dano}`}
-        accessory={() => renderItemAccessory(styles, index, item)}
-        onPress={() => onSelected(item)}
-      />
-    );
-  }
-
-  function renderItemAccessory(styles, index, item) {
-    return (
-      <View>
-        {/* <ButtonGroup style={styles.buttonGroup} status="primary">
-          <Button onPress={() => onSelected(item)}>Editar</Button>
-          <Button onPress={async () => await deleteArmas(item)}>Deletar</Button>
-        </ButtonGroup> */}
-      </View>
-    );
-  }
-
   async function deleteArmas(item) {
-    console.log(item);
     const id = item._id;
     const url = `/armas/${id}`;
 
@@ -59,8 +37,7 @@ export default function PageArma() {
     const request = new Request();
     const response = await request.GET('/armas');
     const {docs} = response.data;
-    return docs;
-    // setState({armas: docs});
+    setArmas(docs);
   }
 
   return (
@@ -80,7 +57,38 @@ export default function PageArma() {
           <Text style={styles.actionText}>Cadastrar</Text>
         </TouchableOpacity>
       </View>
-      <View />
+      <FlatList
+        style={styles.armasList}
+        data={armas}
+        keyExtractor={item => String(item._id)}
+        showsVerticalScrollIndicator={false}
+        renderItem={({item}) => (
+          <View style={styles.armas}>
+            <View style={styles.armasTextAll}>
+              <Text style={styles.armasText}>Nome</Text>
+              <Text style={styles.armasText}>Calibri</Text>
+              <Text style={styles.armasText}>Dano</Text>
+            </View>
+            <View style={styles.armasTextAll}>
+              <Text style={styles.armasTextValue}>{item.nome}</Text>
+              <Text style={styles.armasTextValue}>{item.calibri}</Text>
+              <Text style={styles.armasTextValue}>{item.dano}</Text>
+            </View>
+            <View style={styles.actions}>
+              <TouchableOpacity style={styles.actionEdit} onPress={() => {}}>
+                <Text style={styles.actionText}>Editar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.actionRemove}
+                onPress={() => {
+                  deleteArmas(item);
+                }}>
+                <Text style={styles.actionText}>Remover</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      />
     </View>
   );
 }
