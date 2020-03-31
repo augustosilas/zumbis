@@ -1,63 +1,74 @@
-import React, {Component} from 'react';
-import {View, Button, Text, TextInput, StyleSheet} from 'react-native';
-import axios from 'axios';
+import React from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+
+import styles from './styles';
 
 import Request from '../../../services/requests';
 
-function cadastrar({navigation}) {
+export default function cadastrar() {
   let [nome, setNome] = React.useState();
   let [calibri, setCalibri] = React.useState();
   let [dano, setDano] = React.useState();
 
+  async function createArmas() {
+    let arma = {
+      nome,
+      calibri,
+      dano,
+    };
+
+    let armaJson = await JSON.stringify(arma);
+    const request = new Request();
+    return await request.POST(armaJson, '/armas');
+  }
+
   return (
-    <View>
-      <Text>Cadastro de Armas</Text>
-      <View>
-        <Text>Nome</Text>
-        <TextInput
-          onChangeText={text => setNome(text)}
-          value={nome}
-          placeholder="Nome"
-        />
-        <Text>Calibri</Text>
-        <TextInput
-          onChangeText={text => setCalibri(text)}
-          value={calibri}
-          placeholder="Calibri"
-        />
-        <Text>Dano</Text>
-        <TextInput
-          onChangeText={text => setDano(text)}
-          value={dano}
-          placeholder="Dano"
-        />
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Cadastro de Armas</Text>
+        <View style={styles.inputs}>
+          <Text style={styles.labelInput}>Nome</Text>
+          <TextInput
+            textAlign="center"
+            autoFocus={true}
+            style={styles.textInput}
+            onChangeText={text => setNome(text)}
+            value={nome}
+            placeholder="Nome"
+          />
+          <Text style={styles.labelInput}>Calibri</Text>
+          <TextInput
+            textAlign="center"
+            keyboardType="numeric"
+            autoFocus={true}
+            style={styles.textInput}
+            onChangeText={text => setCalibri(text)}
+            value={calibri}
+            placeholder="Calibri"
+          />
+          <Text style={styles.labelInput}>Dano</Text>
+          <TextInput
+            textAlign="center"
+            keyboardType="numeric"
+            autoFocus={true}
+            style={styles.textInput}
+            onChangeText={text => setDano(text)}
+            value={dano}
+            placeholder="Dano"
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.action}
+          onPress={() => createArmas(nome, calibri, dano)}>
+          <Text style={styles.actionText}>Adicionar</Text>
+        </TouchableOpacity>
       </View>
-      <View>
-        <Button
-          title="Adicionar"
-          onPress={async () => await createArmas(nome, calibri, dano)}
-        />
-        <Button
-          title="Início"
-          onPress={async () => {
-            navigation.navigate('Home');
-          }}
-        />
-      </View>
-    </View>
+    </ScrollView>
   );
 }
-
-const createArmas = async (nome, calibri, dano) => {
-  let arma = {
-    nome,
-    calibri,
-    dano,
-  };
-
-  let armaJson = await JSON.stringify(arma);
-  const request = new Request();
-  return await request.POST(armaJson, '/armas');
-};
-
-export default cadastrar;

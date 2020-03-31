@@ -37,9 +37,7 @@ class Requests {
 
   DELETE = async url => {
     try {
-      console.log(url, 'req');
       const response = await api.delete(url);
-      console.log('delete', response);
       return response;
     } catch (error) {
       console.log(error);

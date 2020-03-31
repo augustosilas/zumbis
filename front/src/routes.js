@@ -8,7 +8,7 @@ import PageZumbi from './pages/Zumbi/PageZumbi';
 import CadastroZumbi from './pages/Zumbi/CRUD/cadastrar';
 import EditarZumbi from './pages/Zumbi/CRUD/editar';
 
-import PageArma from './pages/Arma/PageArma';
+import PageArma from './pages/Arma';
 import CadastroArma from './pages/Arma/CRUD/cadastrar';
 import EditarArma from './pages/Arma/CRUD/editar';
 

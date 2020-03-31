@@ -1,14 +1,25 @@
-import React, {Component, useEffect} from 'react';
-import {View, Button, Text, TextInput, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {useRoute} from '@react-navigation/native';
+import {
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
+
+import styles from './styles';
 
 import Request from '../../../services/requests';
 
-const editar = ({navigation}) => {
+export default function editar() {
   let [nome, setNome] = React.useState();
   let [calibri, setCalibri] = React.useState();
   let [dano, setDano] = React.useState();
 
-  const values = navigation.getParam('values');
+  const route = useRoute();
+
+  const values = route.params.values;
 
   // useEffect reenderiza uma vez mas caso haja alteração reenderiza novamente
   useEffect(() => {
@@ -17,66 +28,61 @@ const editar = ({navigation}) => {
     setDano(String(values.dano));
   }, [values]);
 
-  const updateArmas = async () => {
+  async function updateArmas() {
     let arma = {
       nome,
       calibri,
       dano,
     };
-    let id = values._id;
-    let url = `/armas/${id}`;
 
     let armaJson = await JSON.stringify(arma);
 
+    let id = values._id;
+    let url = `/armas/${id}`;
+
     const request = new Request();
-    return await request.PUT(armaJson, url);
-  };
+    await request.PUT(armaJson, url);
+  }
 
   return (
-    <View>
-      <Text>Alterar Arma</Text>
-      <View>
-        <Text>Nome</Text>
-        <TextInput
-          onChangeText={text => setNome(text)}
-          value={nome}
-          placeholder="Nome"
-        />
-        <Text>Calibri</Text>
-        <TextInput
-          onChangeText={text => setCalibri(text)}
-          value={calibri}
-          placeholder="Calibri"
-        />
-        <Text>Dano</Text>
-        <TextInput
-          onChangeText={text => setDano(text)}
-          value={dano}
-          placeholder="Dano"
-        />
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>Altere sua arma</Text>
+        <View style={styles.inputs}>
+          <Text style={styles.labelInput}>Nome</Text>
+          <TextInput
+            textAlign="center"
+            autoFocus={true}
+            style={styles.textInput}
+            onChangeText={text => setNome(text)}
+            value={nome}
+            placeholder="Nome"
+          />
+          <Text style={styles.labelInput}>Calibri</Text>
+          <TextInput
+            textAlign="center"
+            keyboardType="numeric"
+            autoFocus={true}
+            style={styles.textInput}
+            onChangeText={text => setCalibri(text)}
+            value={calibri}
+            placeholder="Calibri"
+          />
+          <Text style={styles.labelInput}>Dano</Text>
+          <TextInput
+            textAlign="center"
+            keyboardType="numeric"
+            autoFocus={true}
+            style={styles.textInput}
+            onChangeText={text => setDano(text)}
+            value={dano}
+            placeholder="Dano"
+          />
+        </View>
+        <TouchableOpacity style={styles.action} onPress={() => updateArmas()}>
+          <Text style={styles.actionText}>Alterar</Text>
+        </TouchableOpacity>
       </View>
-      <View>
-        <Button title="Alterar" onPress={updateArmas} />
-        <Button
-          title="Início"
-          onPress={() => {
-            navigation.navigate('PageHome');
-          }}
-        />
-      </View>
-    </View>
+    </ScrollView>
   );
-};
-
-function buildJSON(nome, calibri, dano) {
-  return {
-    nome,
-    calibri,
-    dano,
-  };
 }
-
-let objToJSON = obj => {
-  return JSON.stringify(obj);
-};
-export default editar;

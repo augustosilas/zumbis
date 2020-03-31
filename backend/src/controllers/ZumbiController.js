@@ -11,7 +11,7 @@ module.exports = {
     console.log(req);
     // Primeiro parâmetro: query, condições de filtro
     // Segundo parâmetro: página atual e limite de elementos
-    let zumbi = await Zumbi.paginate({}, { page, limit: 10 });
+    let zumbi = await Zumbi.paginate({}, { page, limit: 5 });
 
     return res.json(zumbi);
   },

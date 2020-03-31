@@ -2,15 +2,6 @@ import {StyleSheet} from 'react-native';
 // import Constants from 'expo-constants';
 
 export default StyleSheet.create({
-  //   item: {
-  //     backgroundColor: '#f9c2ff',
-  //     padding: 20,
-  //     marginVertical: 8,
-  //     marginHorizontal: 16,
-  //   },
-  //   title: {
-  //     fontSize: 32,
-  //   },
   container: {
     flex: 1,
     paddingHorizontal: 24,
@@ -48,12 +39,20 @@ export default StyleSheet.create({
     paddingLeft: 5,
     fontWeight: 'bold',
   },
+  total: {
+    fontSize: 13,
+    marginTop: 7,
+    marginStart: 100,
+  },
+  totalText: {
+    fontWeight: 'bold',
+  },
   armas: {
     padding: 10,
     borderRadius: 8,
     backgroundColor: '#FFF',
     // marginBottom: 5,
-    marginTop: 15,
+    marginTop: 5,
   },
   armasTextAll: {
     flexDirection: 'row',
@@ -94,6 +93,13 @@ export default StyleSheet.create({
     borderBottomRightRadius: 30,
   },
   armasList: {
-    marginTop: 20,
+    marginTop: 10,
+  },
+  listZero: {
+    alignItems: 'center',
+    marginVertical: 150,
+  },
+  listZeroText: {
+    color: '#66cdaa',
   },
 });
