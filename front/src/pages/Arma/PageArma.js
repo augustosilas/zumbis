@@ -6,7 +6,6 @@ import styles from './styles';
 import Request from '../../services/requests';
 
 import logoArma from '../../../assets/logoArma.jpg';
-import iconEdit from '../../../assets/edit.svg';
 
 export default function PageArma() {
   const [armas, setArmas] = useState([]);
