@@ -12,7 +12,7 @@ import PageArma from './pages/Arma';
 import CadastroArma from './pages/Arma/CRUD/cadastrar';
 import EditarArma from './pages/Arma/CRUD/editar';
 
-import PageArmadura from './pages/Armadura/PageArmadura';
+import PageArmadura from './pages/Armadura';
 import CadastroArmadura from './pages/Armadura/CRUD/cadastrar';
 import EditaArmadura from './pages/Armadura/CRUD/editar';
 
@@ -28,7 +28,7 @@ export default function Routes() {
         <AppStack.Screen name="EditarArma" component={EditarArma} />
         <AppStack.Screen name="PageHomeArmadura" component={PageArmadura} />
         <AppStack.Screen name="CadastroArmadura" component={CadastroArmadura} />
-        <AppStack.Screen name="EditaArmadura" component={EditaArmadura} />
+        <AppStack.Screen name="EditarArmadura" component={EditaArmadura} />
         <AppStack.Screen name="PageHomeZumbi" component={PageZumbi} />
         <AppStack.Screen name="CadastroZumbi" component={CadastroZumbi} />
         <AppStack.Screen name="EditaZumbi" component={EditarZumbi} />
@@ -36,23 +36,3 @@ export default function Routes() {
     </NavigationContainer>
   );
 }
-
-// const Routes = createAppContainer(
-//   createStackNavigator({
-//     PageHome: PageHome,
-
-//     PageHomeArma: PageArma,
-//     CadastroArma: CadastroArma,
-//     EditarArma: EditarArma,
-
-//     PageHomeArmadura: PageArmadura,
-//     CadastroArmadura: CadastroArmadura,
-//     EditaArmadura: EditaArmadura,
-
-//     PageHomeZumbi: PageZumbi,
-//     CadastroZumbi: CadastroZumbi,
-//     EditaZumbi: EditarZumbi,
-//   }),
-// );
-
-// export default Routes;

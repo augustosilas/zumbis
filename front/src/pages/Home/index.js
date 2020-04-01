@@ -43,7 +43,7 @@ export default function HomeScreen() {
         <TouchableOpacity
           style={styles.action}
           onPress={() => {
-            navigation.navigate('PageHomeArma');
+            navigation.navigate('PageHomeZumbi');
           }}>
           <View style={styles.iconArma}>
             <Image style={styles.iconImageZumbi} source={iconZumbi} />

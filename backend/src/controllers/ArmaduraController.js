@@ -17,7 +17,7 @@ module.exports = {
   async store(req, res) {
     let armadura = await Armadura.create(req.body);
 
-    return req.json(armadura);
+    return res.json(armadura);
   },
 
   // Atualiza um elemento existente através do id
