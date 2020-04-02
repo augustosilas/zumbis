@@ -31,8 +31,7 @@ export default function PageArma() {
 
     setLoading(true);
 
-    const request = new Request();
-    const response = await request.GET('/armas');
+    const response = await Request.GET('/armas');
     const {docs} = response.data;
     setArmas([...armas, ...docs]);
     setTotal(response.data.total);
@@ -44,8 +43,7 @@ export default function PageArma() {
     const id = item._id;
     const url = `/armas/${id}`;
     try {
-      const request = new Request();
-      request.DELETE(url).then(async () => {
+      Request.DELETE(url).then(async () => {
         listArmas().then(async () => {
           console.log('ok!');
         });

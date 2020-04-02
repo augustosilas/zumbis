@@ -27,8 +27,7 @@ export default function cadastrar() {
 
     let armaJson = await JSON.stringify(arma);
 
-    const request = new Request();
-    await request.POST(armaJson, '/armaduras');
+    await Request.POST(armaJson, '/armaduras');
   }
 
   return (

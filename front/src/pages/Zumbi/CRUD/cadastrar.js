@@ -1,111 +1,117 @@
-import React, {useState, Component} from 'react';
-import {View, Text, StyleSheet, ScrollView, FlatList} from 'react-native';
-
-import {Button, List, ListItem, CheckBox} from '@ui-kitten/components';
+import React, {useState, useEffect} from 'react';
+import {View, Text, ScrollView, FlatList, TouchableOpacity} from 'react-native';
+import CheckBox from 'react-native-check-box';
 
 import Request from '../../../services/requests';
+import styles from './styles';
 
-var zumbi = {
-  arma: [],
-  armadura: [],
-};
+export default function cadastrar() {
+  const [armas, setArmas] = useState([]);
+  const [armaduras, setArmaduras] = useState([]);
+  const [zumbi, setZumbi] = useState([]);
 
-export default class cadastrar extends Component {
-  state = {
-    armas: [],
-    armaduras: [],
-  };
+  useEffect(() => {
+    listDados();
+  }, []);
 
-  componentDidMount() {
-    this.listArmas();
-    this.listArmaduras();
+  async function request(url) {
+    const response = await Request.GET(`/${url}`);
+    const {docs} = response.data;
+    return docs;
   }
 
-  listArmas = async () => {
-    const request = new Request();
-    const response = await request.GET('/armas');
-    const {docs} = response.data;
-    this.setState({armas: docs});
-  };
+  async function listDados() {
+    let response;
+    response = await request('armas');
+    setArmas(response);
 
-  listArmaduras = async () => {
-    const request = new Request();
-    const response = await request.GET('/armaduras');
-    const {docs} = response.data;
-    this.setState({armaduras: docs});
-  };
+    response = await request('armaduras');
+    setArmaduras(response);
+  }
 
-  createZumbi = async () => {
+  async function createZumbi() {
     var url = '/zumbi';
-    const request = new Request();
-    await request.POST(zumbi, url);
-  };
+    await Request.POST(zumbi, url);
+  }
 
-  render() {
-    return (
-      <View>
-        <View>
-          <Button
-            appearance={'filled'}
-            onPress={async () => await this.createZumbi()}>
-            Criar Zumbi
-          </Button>
-        </View>
-        <Text>Armas</Text>
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Crie seu zumbi</Text>
+        <TouchableOpacity
+          style={styles.headerAction}
+          onPress={() => createZumbi()}>
+          <Text style={styles.headerActionText}>Criar Zumbi</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.content}>
+        <Text style={styles.contentTitle}>Armas</Text>
         <FlatList
-          data={this.state.armas}
-          numColumns={3}
+          style={styles.contentFlatList}
+          data={armas}
+          numColumns={2}
           keyExtractor={key => key._id}
-          renderItem={({item}) => <Item title={item} />}
+          renderItem={({item}) => (
+            <View style={styles.contentText}>
+              <Item title={item} />
+              <Text style={styles.contentLabel}>Nome</Text>
+              <Text style={styles.contentValue}>{item.nome}</Text>
+
+              <Text style={styles.contentLabel}>Calibri</Text>
+              <Text style={styles.contentValue}>{item.calibri}</Text>
+
+              <Text style={styles.contentLabel}>Dano</Text>
+              <Text style={styles.contentValue}>{item.dano}</Text>
+            </View>
+          )}
         />
-        <Text>Armaduras</Text>
+        <Text style={styles.contentTitle}>Armaduras</Text>
         <FlatList
-          data={this.state.armaduras}
+          style={styles.contentFlatList}
+          data={armaduras}
           numColumns={3}
           keyExtractor={key => key._id}
           renderItem={({item}) => <Item title={item} />}
         />
       </View>
-    );
-  }
-}
-
-function Item(item) {
-  const [checked, setChecked] = React.useState(false);
-
-  const onCheckedChange = isChecked => {
-    setChecked(isChecked);
-    if (isChecked) {
-      var {title} = item;
-
-      if (title.absorcao !== undefined) {
-        zumbi.armadura.push(title);
-      } else {
-        zumbi.arma.push(title);
-      }
-      console.log(zumbi);
-    }
-  };
-  return (
-    <CheckBox
-      text={item.title.nome}
-      checked={checked}
-      onChange={onCheckedChange}
-    />
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});
+function Item({title}) {
+  const [checked, setChecked] = useState(false);
+
+  const onCheckedChange = () => {
+    setChecked(!checked);
+  };
+  return (
+    <View>
+      <CheckBox isChecked={checked} onClick={onCheckedChange} />
+    </View>
+  );
+}
+
+// var {title} = item;
+
+//       if (title.absorcao !== undefined) {
+//         zumbi.armadura.push(title);
+//       } else {
+//         zumbi.arma.push(title);
+//       }
+//       console.log(zumbi);
+//     }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//   },
+//   item: {
+//     backgroundColor: '#f9c2ff',
+//     padding: 20,
+//     marginVertical: 8,
+//     marginHorizontal: 16,
+//   },
+//   title: {
+//     fontSize: 32,
+//   },
+// });

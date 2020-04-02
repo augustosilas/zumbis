@@ -40,8 +40,7 @@ export default function editar() {
     let id = values._id;
     let url = `/armas/${id}`;
 
-    const request = new Request();
-    await request.PUT(armaJson, url);
+    await Request.PUT(armaJson, url);
   }
 
   return (

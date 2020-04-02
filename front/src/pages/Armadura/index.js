@@ -31,8 +31,7 @@ export default function PageArmadura() {
 
     setLoading(true);
 
-    const request = new Request();
-    const response = await request.GET('/armaduras');
+    const response = await Request.GET('/armaduras');
     const {docs} = response.data;
 
     setArmadura([...armadura, ...docs]);
@@ -45,8 +44,7 @@ export default function PageArmadura() {
     const id = item._id;
     const url = `/armaduras/${id}`;
 
-    const request = new Request();
-    request.DELETE(url).then(async () => {
+    Request.DELETE(url).then(async () => {
       listArmadura().then(async () => {
         console.log('ok!');
       });

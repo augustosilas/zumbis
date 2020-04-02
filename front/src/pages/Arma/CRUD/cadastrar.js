@@ -24,8 +24,8 @@ export default function cadastrar() {
     };
 
     let armaJson = await JSON.stringify(arma);
-    const request = new Request();
-    return await request.POST(armaJson, '/armas');
+
+    return await Request.POST(armaJson, '/armas');
   }
 
   return (

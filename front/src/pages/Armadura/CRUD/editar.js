@@ -34,8 +34,7 @@ export default function editar() {
     };
     let armaduraJson = await JSON.stringify(armaduras);
 
-    const request = new Request();
-    await request.PUT(armaduraJson, url);
+    await Request.PUT(armaduraJson, url);
   }
 
   return (

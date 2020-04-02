@@ -64,6 +64,14 @@ export default StyleSheet.create({
     backgroundColor: '#FFF',
     marginTop: 5,
   },
+  zumbiTextHeader: {
+    justifyContent: 'center',
+  },
+  zumbiTextHeaderColumn: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    paddingHorizontal: 25,
+  },
   zumbiTextAll: {
     flexDirection: 'row',
     alignItems: 'baseline',

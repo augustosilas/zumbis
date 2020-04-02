@@ -56,11 +56,20 @@ export default function PageZumbi() {
   }
 
   function BuildFlatListArmaduras({item}) {
+    if (item.armadura.length === 0) {
+      return (
+        <View>
+          <Text>Adicione uma armadura</Text>
+        </View>
+      );
+    }
+
     return (
       <View>
         <FlatList
           data={item.armadura}
-          keyExtractor={({item: key}) => item._id}
+          listKey={armadura => `${armadura.nome}${armadura.absorcao}`}
+          keyExtractor={(armadura, index) => `${armadura.nome}${index}`}
           renderItem={({item: armadura}) => (
             <View style={styles.zumbiTextAll}>
               <Text style={styles.zumbiTextValue}>{armadura.nome}</Text>
@@ -73,11 +82,20 @@ export default function PageZumbi() {
   }
 
   function BuildFlatListArmas({item}) {
+    if (item.arma.length === 0) {
+      return (
+        <View>
+          <Text>Adicione uma arma</Text>
+        </View>
+      );
+    }
+
     return (
       <View>
         <FlatList
           data={item.arma}
-          keyExtractor={({item: key}) => item._id}
+          listKey={arma => `${arma.nome}${arma.calibri}${arma.dano}`}
+          keyExtractor={(arma, index) => `${arma.nome}${index}`}
           renderItem={({item: arma}) => (
             <View style={styles.zumbiTextAll}>
               <Text style={styles.zumbiTextValue}>{arma.nome}</Text>
@@ -106,16 +124,20 @@ export default function PageZumbi() {
           showsVerticalScrollIndicator={false}
           onEndReached={listZumbi}
           onEndReachedThreshold={0.2}
-          renderItem={({item}) => (
+          renderItem={({item}, index) => (
             <View style={styles.zumbi}>
-              {/* <View style={styles.zumbiTextAll}>
-                <Text style={styles.zumbiText}>Armas</Text>
-                <Text style={styles.zumbiText}>Armaduras</Text>
-              </View> */}
+              <Text style={styles.zumbiTextHeader}>Armas</Text>
+              <View style={styles.zumbiTextAll}>
+                <Text style={styles.zumbiTextHeaderColumn}>Nome</Text>
+                <Text style={styles.zumbiTextHeaderColumn}>Calibri</Text>
+                <Text style={styles.zumbiTextHeaderColumn}>Dano</Text>
+              </View>
               <View>
                 <BuildFlatListArmas item={item} />
+                <Text style={styles.zumbiText}>Armaduras</Text>
                 <BuildFlatListArmaduras item={item} />
               </View>
+
               <View style={styles.actions}>
                 <TouchableOpacity
                   style={styles.actionEdit}
@@ -127,7 +149,7 @@ export default function PageZumbi() {
                 <TouchableOpacity
                   style={styles.actionRemove}
                   onPress={() => {
-                    // deletezumbi(item);
+                    // deleteZumbi(item);
                   }}>
                   <Text style={styles.actionText}>Remover</Text>
                 </TouchableOpacity>
@@ -151,7 +173,7 @@ export default function PageZumbi() {
         <TouchableOpacity
           style={styles.action}
           onPress={() => {
-            navigation.navigate('CadastroArma');
+            navigation.navigate('CadastroZumbi');
           }}>
           <Text style={styles.actionText}>Adicionar</Text>
         </TouchableOpacity>

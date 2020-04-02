@@ -4,7 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import PageHome from './pages/Home';
 
-import PageZumbi from './pages/Zumbi/PageZumbi';
+import PageZumbi from './pages/Zumbi';
 import CadastroZumbi from './pages/Zumbi/CRUD/cadastrar';
 import EditarZumbi from './pages/Zumbi/CRUD/editar';
 
