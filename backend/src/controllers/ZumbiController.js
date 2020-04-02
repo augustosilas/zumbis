@@ -8,7 +8,7 @@ const Armadura = mongoose.model("Armadura");
 module.exports = {
   async index(req, res) {
     const { page = 1 } = req.query;
-    console.log(req);
+
     // Primeiro parâmetro: query, condições de filtro
     // Segundo parâmetro: página atual e limite de elementos
     let zumbi = await Zumbi.paginate({}, { page, limit: 5 });
@@ -26,7 +26,7 @@ module.exports = {
     // let zumbiArmadura = await Armadura.findOne({ nome });
 
     // if(zumbiArma != null && zumbiArmadura != null) {
-    console.log(req.body);
+
     const zumbi = await Zumbi.create(req.body);
     return res.json(zumbi);
     // }
