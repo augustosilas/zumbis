@@ -34,6 +34,7 @@ export default function PageArmadura() {
     const request = new Request();
     const response = await request.GET('/armaduras');
     const {docs} = response.data;
+
     setArmadura([...armadura, ...docs]);
     setTotal(response.data.total);
     setPage(page + 1);
