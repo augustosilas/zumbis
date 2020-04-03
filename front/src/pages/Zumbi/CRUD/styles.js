@@ -30,19 +30,30 @@ export default StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
+  total: {
+    fontWeight: 'normal',
+  },
   contentTitle: {
     fontSize: 15,
     fontWeight: 'bold',
   },
   contentFlatList: {
-    paddingTop: 0,
-    paddingVertical: 50,
+    // paddingTop: 0,
+    // paddingVertical: 10,
   },
   contentText: {
-    backgroundColor: '#f0fff0',
-    paddingHorizontal: 50,
+    backgroundColor: '#800000',
+    paddingHorizontal: 25,
     paddingVertical: 5,
-    margin: 10,
+    margin: 5,
+    borderRadius: 10,
+    alignItems: 'flex-start',
   },
-  contentLabel: {},
+  contentLabel: {
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  contentValue: {
+    fontWeight: '100',
+  },
 });
