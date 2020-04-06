@@ -1,21 +1,91 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import * as CheckBox from '@react-native-community/checkbox';
 
 import Request from '../../../services/requests';
 import styles from './styles';
 
+function Item({item, selected, onSelect}) {
+  function BuildList() {
+    if (item.absorcao !== undefined) {
+      return (
+        <>
+          <Text style={styles.contentLabel}>
+            Nome: <Text style={styles.contentValue}>{item.nome}</Text>
+          </Text>
+          <Text style={styles.contentLabel}>
+            Absorção: <Text style={styles.contentValue}>{item.absorcao}</Text>
+          </Text>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Text style={styles.contentLabel}>
+            Nome: <Text style={styles.contentValue}> {item.nome}</Text>
+          </Text>
+
+          <Text style={styles.contentLabel}>
+            Calibri: <Text style={styles.contentValue}>{item.calibri}</Text>
+          </Text>
+
+          <Text style={styles.contentLabel}>
+            Dano: <Text style={styles.contentValue}>{item.dano}</Text>
+          </Text>
+        </>
+      );
+    }
+  }
+
+  return (
+    <TouchableOpacity
+      onPress={() => onSelect(item)}
+      style={[
+        styles.contentText,
+        {backgroundColor: selected ? '#6e3b6e' : '#800000'}, // #f9c2ff
+      ]}>
+      <BuildList />
+    </TouchableOpacity>
+  );
+}
+
 export default function cadastrar() {
   const [armas, setArmas] = useState([]);
   const [armaduras, setArmaduras] = useState([]);
   // const [zumbi, setZumbi] = useState({});
-  const [zumbi, setZumbi] = useState({});
 
   const [totalArmas, setTotalArmas] = useState(0);
   const [totalArmaduras, setTotalArmaduras] = useState(0);
 
-  const [armasCheck, setArmasCheck] = useState([]);
-  const [armadurasCheck, setArmadurasCheck] = useState([]);
+  const [armasSelected, setArmasSelected] = useState([]);
+  const [armadurasSelected, setArmadurassSelected] = useState([]);
+
+  const [selected, setSelected] = useState(new Map());
+
+  const onSelect = useCallback(
+    item => {
+      const newSelected = new Map(selected);
+      let bool = !selected.get(item._id);
+      newSelected.set(item._id, bool);
+
+      if (bool) {
+        if (item.absorcao === undefined) {
+          setArmasSelected([...armasSelected, ...[item]]);
+        } else {
+          setArmadurassSelected([...armadurasSelected, ...[item]]);
+        }
+      } else {
+        if (item.absorcao === undefined) {
+          armasSelected.splice(0, 1);
+        } else {
+          armadurasSelected.splice(0, 1);
+        }
+      }
+
+      setSelected(newSelected);
+    },
+    [selected],
+  );
 
   useEffect(() => {
     listDados();
@@ -39,27 +109,11 @@ export default function cadastrar() {
   }
 
   async function createZumbi() {
+    const zumbi = {armas: armasSelected, armaduras: armadurasSelected};
+
     var url = '/zumbi';
     Request.POST(zumbi, url).then(response => console.log(response));
-  }
-
-  function Item({title}) {
-    const [checked, setChecked] = useState(false);
-
-    let data = {arma: [], armadura: []};
-
-    const onCheckedChange = () => {
-      // const index = data.arma.indexOf(title);
-      // data.arma.splice(index, 1);
-
-      setChecked(!checked);
-    };
-
-    return (
-      <View>
-        <CheckBox value={checked} onChange={() => setChecked(!checked)} />
-      </View>
-    );
+    setSelected(new Map());
   }
 
   return (
@@ -82,20 +136,11 @@ export default function cadastrar() {
           numColumns={2}
           keyExtractor={key => key._id}
           renderItem={({item}) => (
-            <View style={styles.contentText}>
-              <Item title={item} />
-              <Text style={styles.contentLabel}>
-                Nome: <Text style={styles.contentValue}> {item.nome}</Text>
-              </Text>
-
-              <Text style={styles.contentLabel}>
-                Calibri: <Text style={styles.contentValue}>{item.calibri}</Text>
-              </Text>
-
-              <Text style={styles.contentLabel}>
-                Dano: <Text style={styles.contentValue}>{item.dano}</Text>
-              </Text>
-            </View>
+            <Item
+              item={item}
+              selected={!!selected.get(item._id)}
+              onSelect={onSelect}
+            />
           )}
         />
         <Text style={styles.contentTitle}>
@@ -107,16 +152,11 @@ export default function cadastrar() {
           numColumns={2}
           keyExtractor={key => key._id}
           renderItem={({item}) => (
-            <View style={styles.contentText}>
-              <Item title={item} />
-              <Text style={styles.contentLabel}>
-                Nome: <Text style={styles.contentValue}>{item.nome}</Text>
-              </Text>
-              <Text style={styles.contentLabel}>
-                Absorção:{' '}
-                <Text style={styles.contentValue}>{item.absorcao}</Text>
-              </Text>
-            </View>
+            <Item
+              item={item}
+              selected={!!selected.get(item._id)}
+              onSelect={onSelect}
+            />
           )}
         />
       </View>
