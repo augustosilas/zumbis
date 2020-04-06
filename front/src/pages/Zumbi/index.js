@@ -15,10 +15,6 @@ export default function PageZumbi() {
 
   const navigation = useNavigation();
 
-  function onSelected(item) {
-    navigation.navigate('EditaZumbi', {values: item});
-  }
-
   useEffect(() => {
     listZumbi();
   }, []);
@@ -142,14 +138,14 @@ export default function PageZumbi() {
                 <TouchableOpacity
                   style={styles.actionEdit}
                   onPress={() => {
-                    navigation.navigate('EditarZumbi', {values: item});
+                    navigation.navigate('EditaZumbi', {value: item});
                   }}>
                   <Text style={styles.actionText}>Editar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.actionRemove}
-                  onPress={() => {
-                    // deleteZumbi(item);
+                  onPress={async () => {
+                    await deleteZumbi(item);
                   }}>
                   <Text style={styles.actionText}>Remover</Text>
                 </TouchableOpacity>
