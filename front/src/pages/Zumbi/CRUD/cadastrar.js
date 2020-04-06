@@ -109,10 +109,10 @@ export default function cadastrar() {
   }
 
   async function createZumbi() {
-    const zumbi = {armas: armasSelected, armaduras: armadurasSelected};
+    const zumbi = {arma: armasSelected, armadura: armadurasSelected};
 
     var url = '/zumbi';
-    Request.POST(zumbi, url).then(response => console.log(response));
+    Request.POST(zumbi, url).then(response => console.log('ok'));
     setSelected(new Map());
   }
 
