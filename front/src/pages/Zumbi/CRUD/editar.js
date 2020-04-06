@@ -1,114 +1,167 @@
-import React, {useState, Component} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
-
-import {Button, CheckBox} from '@ui-kitten/components';
+import React, {useState, useEffect, useCallback} from 'react';
+import {useRoute} from '@react-navigation/native';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 
 import Request from '../../../services/requests';
+import styles from './styles';
 
-var zumbi = {
-  arma: [],
-  armadura: [],
-};
+export default function cadastrar() {
+  const [armas, setArmas] = useState([]);
+  const [armaduras, setArmaduras] = useState([]);
 
-export default class editar extends Component {
-  state = {
-    armas: [],
-    armaduras: [],
-  };
+  const [totalArmas, setTotalArmas] = useState(0);
+  const [totalArmaduras, setTotalArmaduras] = useState(0);
 
-  values = this.props.navigation.getParam('values');
+  const [armasSelected, setArmasSelected] = useState([]);
+  const [armadurasSelected, setArmadurassSelected] = useState([]);
 
-  componentDidMount() {
-    this.listArmas();
-    this.listArmaduras();
+  const [selected, setSelected] = useState(new Map());
+
+  const route = useRoute();
+  const {arma: armaCurrent, armadura: armaduraCurrent} = route.params.value;
+
+  const onSelect = useCallback(
+    item => {
+      const newSelected = new Map(selected);
+
+      let bool = !selected.get(item._id);
+      newSelected.set(item._id, bool);
+
+      if (bool) {
+        if (item.absorcao === undefined) {
+          setArmasSelected([...armasSelected, ...[item]]);
+        } else {
+          setArmadurassSelected([...armadurasSelected, ...[item]]);
+        }
+      } else {
+        if (item.absorcao === undefined) {
+          armasSelected.splice(0, 1);
+        } else {
+          armadurasSelected.splice(0, 1);
+        }
+      }
+
+      setSelected(newSelected);
+    },
+    [selected],
+  );
+
+  useEffect(() => {
+    listDados().then();
+  }, []);
+
+  async function request(url) {
+    const response = await Request.GET(`/${url}`);
+    return response.data;
   }
 
-  listArmas = async () => {
-    const request = new Request();
-    const response = await request.GET('/armas');
-    const {docs} = response.data;
-    this.setState({armas: docs});
-  };
+  async function listDados() {
+    request('armas').then(({docs, total}) => {
+      setArmas(docs);
+      setTotalArmas(total);
+    });
 
-  listArmaduras = async () => {
-    const request = new Request();
-    const response = await request.GET('/armaduras');
-    const {docs} = response.data;
-    this.setState({armaduras: docs});
-  };
+    request('armaduras').then(({docs, total}) => {
+      setArmaduras(docs);
+      setTotalArmaduras(total);
+    });
+  }
 
-  updateZumbi = async () => {
-    var id = this.values_id;
-    var url = `/zumbi/${id}`;
-    const request = new Request();
-    await request.PUT(zumbi, url);
-  };
+  async function updateZumbi() {
+    const zumbi = {arma: armasSelected, armadura: armadurasSelected};
 
-  render() {
-    return (
-      <View>
-        <View>
-          <Button
-            appearance={'filled'}
-            onPress={async () => await this.updateZumbi()}>
-            Alterar
-          </Button>
-        </View>
-        <Text>Armas</Text>
+    var url = '/zumbi';
+    Request.POST(zumbi, url).then(response => console.log('ok'));
+    setSelected(new Map());
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Edite seu zumbi</Text>
+        <TouchableOpacity
+          style={styles.headerAction}
+          onPress={() => updateZumbi()}>
+          <Text style={styles.headerActionText}>Editar Zumbi</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.content}>
+        <Text style={styles.contentTitle}>
+          Armas: <Text style={styles.total}>{totalArmas}</Text>
+        </Text>
         <FlatList
-          data={this.state.armas}
-          numColumns={3}
+          style={styles.contentFlatList}
+          data={armas}
+          numColumns={2}
           keyExtractor={key => key._id}
-          renderItem={({item}) => <Item title={item} />}
+          renderItem={({item}) => (
+            <Item
+              item={item}
+              selected={!!selected.get(item._id)}
+              onSelect={onSelect}
+            />
+          )}
         />
-        <Text>Armaduras</Text>
+        <Text style={styles.contentTitle}>
+          Armaduras: <Text style={styles.total}>{totalArmaduras}</Text>
+        </Text>
         <FlatList
-          data={this.state.armaduras}
-          numColumns={3}
+          style={styles.contentFlatList}
+          data={armaduras}
+          numColumns={2}
           keyExtractor={key => key._id}
-          renderItem={({item}) => <Item title={item} />}
+          renderItem={({item}) => (
+            <Item
+              item={item}
+              selected={!!selected.get(item._id)}
+              onSelect={onSelect}
+            />
+          )}
         />
       </View>
-    );
-  }
-}
-
-function Item(item) {
-  const [checked, setChecked] = React.useState(false);
-
-  const onCheckedChange = isChecked => {
-    setChecked(isChecked);
-    if (isChecked) {
-      var {title} = item;
-
-      if (title.absorcao !== undefined) {
-        zumbi.armadura.push(title);
-      } else {
-        zumbi.arma.push(title);
-      }
-      console.log(zumbi);
-    }
-  };
-  return (
-    <CheckBox
-      text={item.title.nome}
-      checked={checked}
-      onChange={onCheckedChange}
-    />
+    </View>
   );
 }
+function Item({item, selected, onSelect}) {
+  function BuildList() {
+    if (item.absorcao !== undefined) {
+      return (
+        <>
+          <Text style={styles.contentLabel}>
+            Nome: <Text style={styles.contentValue}>{item.nome}</Text>
+          </Text>
+          <Text style={styles.contentLabel}>
+            Absorção: <Text style={styles.contentValue}>{item.absorcao}</Text>
+          </Text>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Text style={styles.contentLabel}>
+            Nome: <Text style={styles.contentValue}> {item.nome}</Text>
+          </Text>
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});
+          <Text style={styles.contentLabel}>
+            Calibri: <Text style={styles.contentValue}>{item.calibri}</Text>
+          </Text>
+
+          <Text style={styles.contentLabel}>
+            Dano: <Text style={styles.contentValue}>{item.dano}</Text>
+          </Text>
+        </>
+      );
+    }
+  }
+
+  return (
+    <TouchableOpacity
+      onPress={() => onSelect(item)}
+      style={[
+        styles.contentText,
+        {backgroundColor: selected ? '#6e3b6e' : '#800000'}, // #f9c2ff
+      ]}>
+      <BuildList />
+    </TouchableOpacity>
+  );
+}
