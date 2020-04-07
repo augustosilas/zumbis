@@ -53,17 +53,19 @@ export default function cadastrar() {
 
   async function setCurrentItem() {
     if (armasSelected.length !== 0) {
-      setCurrent(armasSelected);
+      await setCurrent(armasSelected);
     }
     if (armadurasSelected.length !== 0) {
-      setCurrent(armasSelected);
+      await setCurrent(armasSelected);
     }
   }
+
   async function setCurrent(array) {
-    array.forEach(element => {
-      onSelect(element);
+    array.forEach(async element => {
+      await onSelect(element);
     });
   }
+
   async function request(url) {
     const response = await Request.GET(`/${url}`);
     return response.data;
@@ -85,7 +87,7 @@ export default function cadastrar() {
     const zumbi = {arma: armasSelected, armadura: armadurasSelected};
 
     var url = '/zumbi';
-    Request.POST(zumbi, url).then(response => console.log('ok'));
+    Request.PUT(zumbi, url).then(response => console.log('ok'));
     setSelected(new Map());
   }
 
