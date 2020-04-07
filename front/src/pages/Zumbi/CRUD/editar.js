@@ -6,19 +6,19 @@ import Request from '../../../services/requests';
 import styles from './styles';
 
 export default function cadastrar() {
+  const route = useRoute();
+  const {arma: currentArma, armadura: currentArmadura} = route.params.value;
+
   const [armas, setArmas] = useState([]);
   const [armaduras, setArmaduras] = useState([]);
 
   const [totalArmas, setTotalArmas] = useState(0);
   const [totalArmaduras, setTotalArmaduras] = useState(0);
 
-  const [armasSelected, setArmasSelected] = useState([]);
-  const [armadurasSelected, setArmadurassSelected] = useState([]);
+  const [armasSelected, setArmasSelected] = useState(currentArma);
+  const [armadurasSelected, setArmadurassSelected] = useState(currentArmadura);
 
   const [selected, setSelected] = useState(new Map());
-
-  const route = useRoute();
-  const {arma: armaCurrent, armadura: armaduraCurrent} = route.params.value;
 
   const onSelect = useCallback(
     item => {
@@ -48,8 +48,22 @@ export default function cadastrar() {
 
   useEffect(() => {
     listDados().then();
+    setCurrentItem();
   }, []);
 
+  async function setCurrentItem() {
+    if (armasSelected.length !== 0) {
+      setCurrent(armasSelected);
+    }
+    if (armadurasSelected.length !== 0) {
+      setCurrent(armasSelected);
+    }
+  }
+  async function setCurrent(array) {
+    array.forEach(element => {
+      onSelect(element);
+    });
+  }
   async function request(url) {
     const response = await Request.GET(`/${url}`);
     return response.data;
