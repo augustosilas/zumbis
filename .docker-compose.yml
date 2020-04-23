@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  api-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_PORT: 27017
+    links:
+      - mongo
+    depends_on:
+      - mongo
+    networks:
+      - jupiter
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./database:/database/mongodb
+    networks:
+      - jupiter
+
+networks:
+  jupiter:
+    driver: bridge
